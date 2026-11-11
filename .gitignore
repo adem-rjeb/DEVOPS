@@ -6,3 +6,4 @@ coverage
 *.db
 *.db-journal
 docker-data
+.DS_Store
