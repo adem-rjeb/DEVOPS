@@ -54,3 +54,27 @@ Code -> Git push/PR -> GitHub Actions (lint + tests + build) -> Build Docker -> 
 ```
 
 Toutes les valeurs sensibles passent par `.env` ou les secrets CI ; aucun secret n'est versionné.
+
+## Configuration and secrets
+
+The application is configured only through environment variables.
+No secret is stored in the source code or in Git.
+
+| Variable       | Purpose                     | Local                   | CI                           | Test environment                        |
+| -------------- | --------------------------- | ----------------------- | ---------------------------- | --------------------------------------- |
+| `DATABASE_URL` | Database connection         | SQLite file (`.env`)    | SQLite (from `.env.example`) | PostgreSQL (hosting dashboard)          |
+| `JWT_SECRET`   | Signs authentication tokens | Dev value in `.env`     | Dummy value                  | Strong random value (hosting dashboard) |
+| `NEXTAUTH_URL` | Public URL of the app       | `http://localhost:3000` | not used                     | Public URL of the test app              |
+
+### By environment
+
+- **Local:** copy `.env.example` to `.env` and adjust. `.env` is in `.gitignore`.
+- **CI:** the pipeline uses `.env.example` (dummy values only). The registry login uses the automatic `GITHUB_TOKEN`.
+- **Docker Compose:** variables are set in `docker-compose.yml`. `JWT_SECRET` can be overridden from the shell: `JWT_SECRET=... docker compose up`. The default value is for local use only.
+- **Test environment:** variables are set in the hosting dashboard. Deployment secrets (`DEPLOY_HOOK_URL`, `APP_URL`) are stored as GitHub Actions secrets.
+
+### Rules
+
+- Never commit `.env`.
+- Test and production secrets are different from development ones.
+- `JWT_SECRET` must be a long random value outside local development. Generate one with: `openssl rand -base64 32`
