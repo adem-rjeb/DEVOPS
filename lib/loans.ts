@@ -1,6 +1,9 @@
 import { prisma } from "@/lib/prisma";
 
-export function assertBorrowAllowed(hasActiveBookLoan: boolean, activeMemberLoans: number) {
+export function assertBorrowAllowed(
+  hasActiveBookLoan: boolean,
+  activeMemberLoans: number,
+) {
   if (hasActiveBookLoan) throw new Error("BOOK_UNAVAILABLE");
   if (activeMemberLoans >= 3) throw new Error("LOAN_LIMIT");
 }
