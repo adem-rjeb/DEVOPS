@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
 
-vi.mock("@/lib/prisma", () => ({ prisma: { $queryRaw: vi.fn().mockResolvedValue([{ 1: 1 }]) } }));
+vi.mock("@/lib/prisma", () => ({
+  prisma: { $queryRaw: vi.fn().mockResolvedValue([{ 1: 1 }]) },
+}));
 import { GET } from "@/app/api/health/route";
 
 describe("GET /api/health", () => {

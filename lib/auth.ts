@@ -4,9 +4,15 @@ import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 
 const cookieName = "library-session";
-const secret = new TextEncoder().encode(process.env.JWT_SECRET ?? "development-secret");
+const secret = new TextEncoder().encode(
+  process.env.JWT_SECRET ?? "development-secret",
+);
 
-export type Session = { userId: string; role: "ADMIN" | "MEMBRE"; name: string };
+export type Session = {
+  userId: string;
+  role: "ADMIN" | "MEMBRE";
+  name: string;
+};
 
 export async function hashPassword(password: string) {
   return bcrypt.hash(password, 12);
@@ -61,9 +67,16 @@ export async function requireAdmin() {
 }
 
 export async function authenticate(email: string, password: string) {
-  const user = await prisma.user.findUnique({ where: { email: email.toLowerCase() } });
-  if (!user || !(await verifyPassword(password, user.passwordHash))) return null;
-  return { userId: user.id, role: user.role, name: user.name } satisfies Session;
+  const user = await prisma.user.findUnique({
+    where: { email: email.toLowerCase() },
+  });
+  if (!user || !(await verifyPassword(password, user.passwordHash)))
+    return null;
+  return {
+    userId: user.id,
+    role: user.role,
+    name: user.name,
+  } satisfies Session;
 }
 
 export const sessionCookieName = cookieName;

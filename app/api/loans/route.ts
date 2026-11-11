@@ -6,9 +6,18 @@ import { prisma } from "@/lib/prisma";
 export async function GET() {
   try {
     const session = await requireSession();
-    return NextResponse.json(await prisma.loan.findMany({ where: { userId: session.userId }, include: { book: true }, orderBy: { borrowedAt: "desc" } }));
+    return NextResponse.json(
+      await prisma.loan.findMany({
+        where: { userId: session.userId },
+        include: { book: true },
+        orderBy: { borrowedAt: "desc" },
+      }),
+    );
   } catch {
-    return NextResponse.json({ error: "Authentification requise." }, { status: 401 });
+    return NextResponse.json(
+      { error: "Authentification requise." },
+      { status: 401 },
+    );
   }
 }
 export async function POST(request: Request) {
@@ -19,7 +28,13 @@ export async function POST(request: Request) {
     return NextResponse.json(loan, { status: 201 });
   } catch (error) {
     const message = error instanceof Error ? error.message : "";
-    const errors: Record<string, string> = { BOOK_UNAVAILABLE: "Ce livre est déjà emprunté.", LOAN_LIMIT: "Un membre ne peut pas dépasser 3 emprunts." };
-    return NextResponse.json({ error: errors[message] ?? "Emprunt impossible." }, { status: message === "UNAUTHORIZED" ? 401 : 409 });
+    const errors: Record<string, string> = {
+      BOOK_UNAVAILABLE: "Ce livre est déjà emprunté.",
+      LOAN_LIMIT: "Un membre ne peut pas dépasser 3 emprunts.",
+    };
+    return NextResponse.json(
+      { error: errors[message] ?? "Emprunt impossible." },
+      { status: message === "UNAUTHORIZED" ? 401 : 409 },
+    );
   }
 }
