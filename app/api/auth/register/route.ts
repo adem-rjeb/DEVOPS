@@ -1,20 +1,21 @@
 import { NextResponse } from "next/server";
 import { createSession, hashPassword } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { registerSchema } from "@/lib/validation";
 
 export async function POST(request: Request) {
-  const { name, email, password } = await request.json();
-  if (
-    typeof name !== "string" ||
-    name.length < 2 ||
-    typeof email !== "string" ||
-    typeof password !== "string" ||
-    password.length < 8
-  )
+  const body = await request.json().catch(() => null);
+  const parsed = registerSchema.safeParse(body);
+  if (!parsed.success)
     return NextResponse.json(
-      { error: "Nom, email et mot de passe valide requis." },
+      {
+        error:
+          parsed.error.issues[0]?.message ??
+          "Nom, email et mot de passe valide requis.",
+      },
       { status: 400 },
     );
+  const { name, email, password } = parsed.data;
   try {
     const user = await prisma.user.create({
       data: {

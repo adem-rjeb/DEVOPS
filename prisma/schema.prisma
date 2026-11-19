@@ -12,6 +12,13 @@ enum Role {
   MEMBRE
 }
 
+enum ReservationStatus {
+  WAITING
+  READY
+  CANCELLED
+  FULFILLED
+}
+
 model User {
   id           String   @id @default(cuid())
   name         String
@@ -19,17 +26,35 @@ model User {
   passwordHash String
   role         Role     @default(MEMBRE)
   loans        Loan[]
+  reservations Reservation[]
   createdAt    DateTime @default(now())
 }
 
 model Book {
-  id        String   @id @default(cuid())
-  title     String
-  author    String
-  isbn      String?  @unique
-  loans     Loan[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id              String   @id @default(cuid())
+  title           String
+  author          String
+  isbn            String?  @unique
+  totalCopies     Int      @default(1)
+  availableCopies Int      @default(1)
+  loans           Loan[]
+  reservations    Reservation[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Reservation {
+  id        String            @id @default(cuid())
+  userId    String
+  bookId    String
+  createdAt DateTime          @default(now())
+  status    ReservationStatus @default(WAITING)
+  readyUntil DateTime?
+  user      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  book      Book              @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  @@index([bookId, status, createdAt])
+  @@index([userId, status])
 }
 
 model Loan {
@@ -37,6 +62,8 @@ model Loan {
   userId     String
   bookId     String
   borrowedAt DateTime  @default(now())
+  dueDate    DateTime
+  renewCount Int       @default(0)
   returnedAt DateTime?
   user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   book       Book      @relation(fields: [bookId], references: [id], onDelete: Cascade)

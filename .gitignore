@@ -6,4 +6,6 @@ coverage
 *.db
 *.db-journal
 docker-data
+test-results/
+playwright-report/
 .DS_Store

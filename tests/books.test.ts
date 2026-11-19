@@ -32,8 +32,27 @@ describe("livres", () => {
     const response = await POST(
       new Request("http://localhost/api/books", {
         method: "POST",
-        body: JSON.stringify({ title: "Dune", author: "A" }),
+        body: JSON.stringify({ title: "Dune", author: "A", totalCopies: 1 }),
       }),
+    );
+    expect(response.status).toBe(403);
+  });
+  it("protège la modification contre un membre", async () => {
+    const { PUT } = await import("@/app/api/books/[id]/route");
+    const response = await PUT(
+      new Request("http://localhost/api/books/1", {
+        method: "PUT",
+        body: JSON.stringify({ title: "Dune", author: "A", totalCopies: 1 }),
+      }),
+      { params: Promise.resolve({ id: "1" }) },
+    );
+    expect(response.status).toBe(403);
+  });
+  it("protège la suppression contre un membre", async () => {
+    const { DELETE } = await import("@/app/api/books/[id]/route");
+    const response = await DELETE(
+      new Request("http://localhost/api/books/1", { method: "DELETE" }),
+      { params: Promise.resolve({ id: "1" }) },
     );
     expect(response.status).toBe(403);
   });

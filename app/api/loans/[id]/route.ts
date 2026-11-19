@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { requireSession } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+import { logAudit } from "@/lib/logger";
+import { returnBook } from "@/lib/loans";
+import { idParamSchema } from "@/lib/validation";
 
 export async function PATCH(
   _request: Request,
@@ -8,18 +10,25 @@ export async function PATCH(
 ) {
   try {
     const session = await requireSession();
-    const { id } = await context.params;
-    const loan = await prisma.loan.updateMany({
-      where: { id, userId: session.userId, returnedAt: null },
-      data: { returnedAt: new Date() },
-    });
-    if (!loan.count)
+    const parsed = idParamSchema.safeParse(await context.params);
+    if (!parsed.success)
       return NextResponse.json(
-        { error: "Emprunt introuvable." },
+        { error: "Identifiant requis." },
+        { status: 400 },
+      );
+    const { id } = parsed.data;
+    await returnBook(session.userId, session.role, id);
+    logAudit(session.userId, "RETURN", id);
+    return NextResponse.json({ ok: true });
+  } catch (error) {
+    if (error instanceof Error && error.message === "LOAN_NOT_FOUND")
+      return NextResponse.json(
+        {
+          error:
+            "Emprunt introuvable ou vous n'êtes pas autorisé à le retourner.",
+        },
         { status: 404 },
       );
-    return NextResponse.json({ ok: true });
-  } catch {
     return NextResponse.json(
       { error: "Authentification requise." },
       { status: 401 },
