@@ -7,8 +7,8 @@ export default defineConfig({
   reporter: "line",
   use: {
     baseURL: "http://127.0.0.1:3000",
-    trace: "on-first-retry",
-    channel: "chrome",
+    trace: "retain-on-failure", // CHANGED: "on-first-retry" never fires with retries: 0
+    // channel: "chrome" removed: CI uses Playwright's Chromium
   },
   projects: [
     {

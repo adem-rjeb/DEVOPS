@@ -14,6 +14,7 @@ jobs:
         with:
           node-version: 22
           cache: npm
+
       - run: npm ci
       - run: cp .env.example .env
       - run: npx prisma generate
@@ -24,8 +25,16 @@ jobs:
         run: npm run lint
       - name: Tests
         run: npm test
-      - name: Security audit (dependencies)
-        run: npm audit --audit-level=high || echo "::warning::Known Prisma CLI advisory GHSA-ggr8-5vv4-36mx, see README"
+
+      # CHANGED: this step can now really fail (blocks on critical)
+      - name: Security audit (blocking on critical)
+        run: npm audit --omit=dev --audit-level=critical
+
+      # NEW: high severity is reported but does not block (known Prisma CLI advisories, see README)
+      - name: Security audit (informational, high)
+        run: npm audit --omit=dev --audit-level=high
+        continue-on-error: true
+
       - name: Build
         run: npm run build
       - name: Seed demo data
@@ -34,6 +43,15 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: End-to-end test
         run: npm run test:e2e
+
+      # NEW: keep traces to diagnose E2E failures
+      - name: Upload Playwright traces
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-traces
+          path: test-results/
+          if-no-files-found: ignore
 
   docker:
     needs: quality
@@ -88,15 +106,22 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=gha
 
-  # Uncomment when your test environment exists (Render, Railway...)
-  # deploy:
-  #   needs: docker
-  #   if: github.ref == 'refs/heads/main'
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Trigger deploy
-  #       run: curl -X POST "${{ secrets.DEPLOY_HOOK_URL }}"
-  #     - name: Wait for the app to start
-  #       run: sleep 60
-  #     - name: Smoke test (health probe)
-  #       run: curl --fail --retry 5 --retry-delay 10 "${{ secrets.APP_URL }}/api/health"
+  deploy:
+    needs: docker
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    environment: test
+    steps:
+      - name: Trigger deploy
+        run: curl --fail -X POST "${{ secrets.DEPLOY_HOOK_URL }}"
+
+      - name: Health probe
+        run: |
+          curl --fail --silent --show-error \
+            --retry 12 --retry-delay 10 --retry-all-errors \
+            "${{ secrets.APP_URL }}/api/health" -o health.json
+          cat health.json
+          jq -e '.status == "ok" and .database == "ok"' health.json
+
+      - name: Smoke test (home page)
+        run: curl --fail --silent --output /dev/null "${{ secrets.APP_URL }}/"
