@@ -107,22 +107,22 @@ jobs:
           cache-from: type=gha
 
 #  deploy:
- #   needs: docker
-  #  if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-   # runs-on: ubuntu-latest
-    #environment: test
-   # steps:
-    #  - name: Trigger deploy
-     #   run: curl --fail -X POST "${{ secrets.DEPLOY_HOOK_URL }}"
+#   needs: docker
+#  if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+# runs-on: ubuntu-latest
+#environment: test
+# steps:
+#  - name: Trigger deploy
+#   run: curl --fail -X POST "${{ secrets.DEPLOY_HOOK_URL }}"
 #
- #     - name: Health probe
-  #      run: |
-   #       curl --fail --silent --show-error \
-    #        --retry 12 --retry-delay 10 --retry-all-errors \
-     #       "${{ secrets.APP_URL }}/api/health" -o health.json
-      #    cat health.json
-       #   jq -e '.status == "ok" and .database == "ok"' health.json
+#     - name: Health probe
+#      run: |
+#       curl --fail --silent --show-error \
+#        --retry 12 --retry-delay 10 --retry-all-errors \
+#       "${{ secrets.APP_URL }}/api/health" -o health.json
+#    cat health.json
+#   jq -e '.status == "ok" and .database == "ok"' health.json
 #
- #     - name: Smoke test (home page)
-  #      run: curl --fail --silent --output /dev/null "${{ secrets.APP_URL }}/"
+#     - name: Smoke test (home page)
+#      run: curl --fail --silent --output /dev/null "${{ secrets.APP_URL }}/"
 #
