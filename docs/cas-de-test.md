@@ -264,3 +264,81 @@ Les cas ci-dessous utilisent les techniques suivantes:
 - **Niveau:** API
 - **Etat actuel:** déjà conforme.
 - **Automatisation existante:** `tests/books.test.ts` couvre membre, pas titre vide.
+
+## CT-21 - Second retour interdit
+
+- **Exigence / risque:** EX-08 / R-08
+- **Objectif:** empêcher la transition `RETURNED -> RETURNED`.
+- **Préconditions:** prêt déjà retourné.
+- **Données:** loanId retourné.
+- **Étapes:** PATCH `/api/loans/:id` une seconde fois.
+- **Résultat attendu:** HTTP `404`, `Emprunt introuvable ou vous n'êtes pas autorisé à le retourner.`
+- **Technique:** transition d'état.
+- **Niveau:** API
+- **Etat actuel:** prévu réussi.
+- **Automatisation existante:** aucune.
+
+## CT-22 - Admin empruntant
+
+- **Exigence / risque:** EX-03 / R-01
+- **Objectif:** empêcher la transition membre? vers emprunt pour un administrateur.
+- **Préconditions:** ADMIN connecté, stock disponible.
+- **Données:** role ADMIN, livre disponible.
+- **Étapes:** POST `/api/loans`.
+- **Résultat attendu:** HTTP `403`, `Les administrateurs ne peuvent pas emprunter de livres.`
+- **Technique:** table de décision rôle × action × ressource.
+- **Niveau:** API
+- **Etat actuel:** prévu réussi.
+- **Automatisation existante:** CT-07 déjà couvert.
+
+## CT-23 - Retour par administrateur
+
+- **Exigence / risque:** EX-08 / R-08
+- **Objectif:** autoriser l'ADMIN à retourner tout prêt actif.
+- **Préconditions:** prêt actif d'Alice, session ADMIN.
+- **Données:** loanId Alice.
+- **Étapes:** PATCH `/api/loans/:id`.
+- **Résultat attendu:** HTTP `200`, `{"ok":true}`.
+- **Technique:** table de décision rôle × action × ressource.
+- **Niveau:** API
+- **Etat actuel:** prévu réussi.
+- **Automatisation existante:** `tests/permissions.test.ts` - `autorise un administrateur à retourner un prêt`.
+
+## CT-24 - Emprunt à trois actifs
+
+- **Exigence / risque:** EX-04 / R-02
+- **Objectif:** interdire un quatrième emprunt.
+- **Préconditions:** membre avec trois emprunts actifs.
+- **Données:** quatrième livre disponible.
+- **Étapes:** POST `/api/loans`.
+- **Résultat attendu:** HTTP `403`, `Un membre ne peut pas dépasser 3 emprunts.`
+- **Technique:** transition d'état.
+- **Niveau:** API/intégration
+- **Etat actuel:** prévu réussi.
+- **Automatisation existante:** CT-11 et `tests/loans.test.ts`.
+
+## CT-25 - Emprunt avec stock zéro
+
+- **Exigence / risque:** EX-06 / R-03
+- **Objectif:** interdire l'emprunt hors stock.
+- **Préconditions:** availableCopies=0.
+- **Données:** livre stock zéro.
+- **Étapes:** POST `/api/loans`.
+- **Résultat attendu:** HTTP `409`, `Aucun exemplaire disponible.`
+- **Technique:** transition d'état.
+- **Niveau:** API/intégration
+- **Etat actuel:** prévu réussi.
+- **Automatisation existante:** CT-12.
+
+## CT-26 - Emprunt avec prêt en retard
+
+- **Exigence / risque:** EX-14 / R-12
+- **Objectif:** interdire l'emprunt tant qu'un prêt est LATE.
+- **Préconditions:** membre avec prêt active dueDate dépassée.
+- **Données:** nouveau livre disponible.
+- **Étapes:** POST `/api/loans`.
+- **Résultat attendu:** HTTP `403`, `Vous devez retourner vos emprunts en retard avant d'en prendre un nouveau.`
+- **Technique:** transition d'état.
+- **Niveau:** API/intégration
+- **Etat actuel:** prévu réussi.
+- **Automatisation existante:** `tests/loans.test.ts` - `interdit un nouvel emprunt avec un retard`.

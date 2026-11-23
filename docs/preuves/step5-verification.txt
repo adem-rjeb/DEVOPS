@@ -1,0 +1,6 @@
+Date: 2026-11-23T21:21:15+01:00
+Command: npm test -- tests/unit/anomaly-regression.test.ts tests/loans.test.ts tests/permissions.test.ts
+Exit status: 0
+Test Files: 3 passed (3)
+Tests: 25 passed (25)
+Duration: 2.47 s

@@ -1,0 +1,20 @@
+Date: 2026-11-23T21:18:13+01:00
+Commit: 9c3cd95
+Fix commit: 76c98df
+Anomalie: AN-03
+App: http://127.0.0.1:3105
+Database: /tmp/bibliotheque-step4.db
+
+[CT-19 - titre 201 caractères]
+Command: POST /api/books avec {"title":"A"*201,"author":"Auteur valide","totalCopies":1}
+HTTP status: 201
+JSON body:
+{"title":"<201 caractères A>","author":"Auteur valide","isbn":null,"totalCopies":1,"availableCopies":1}
+Conclusion: attendu échec sur le code actuel, anomalie AN-03 reproduite.
+
+[Titre/auteur 500 caractères]
+Command: POST /api/books avec {"title":"A"*500,"author":"B"*500,"totalCopies":1}
+HTTP status: 201
+JSON body:
+{"title":"<500 caractères A>","author":"<500 caractères B>","isbn":null,"totalCopies":1,"availableCopies":1}
+Conclusion: attendu échec sur le code actuel, anomalie AN-03 reproduite.

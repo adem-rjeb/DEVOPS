@@ -1,0 +1,45 @@
+Date: 2026-11-23T21:20:00+01:00
+Commit: 9c3cd95
+App: http://127.0.0.1:3105
+Database: /tmp/bibliotheque-step4.db
+
+[Visitor]
+GET /api/loans -> HTTP 307 -> /login through middleware
+GET /api/health -> HTTP 200
+
+[Member]
+POST /api/auth/login -> HTTP 200
+GET /api/books -> HTTP 200
+POST /api/books -> HTTP 403
+POST /api/loans as member with seed stock 0 -> HTTP 409
+PATCH own loan first -> HTTP 200
+PATCH same loan second -> HTTP 404
+PATCH Alice loan as Bruno -> HTTP 404
+
+[Admin]
+POST /api/auth/login -> HTTP 200
+POST /api/books -> HTTP 201
+POST /api/loans with real seeded book -> HTTP 403
+Body: {"error":"Les administrateurs ne peuvent pas emprunter de livres."}
+
+[Stock zero]
+POST /api/loans with Livre Stock Zéro -> HTTP 409
+Body: {"error":"Aucun exemplaire disponible."}
+
+[Second return]
+PATCH returned loan -> HTTP 404
+Body: {"error":"Emprunt introuvable ou vous n'êtes pas autorisé à le retourner."}
+
+[Cross-member return]
+Bruno PATCH Alice loan -> HTTP 404
+Body: {"error":"Emprunt introuvable ou vous n'êtes pas autorisé à le retourner."}
+
+[Overdue loan]
+Fixture réelle avec dueDate 2026-10-15
+POST /api/loans for another available book -> HTTP 403
+Body: {"error":"Vous devez retourner vos emprunts en retard avant d'en prendre un nouveau."}
+
+[Admin return live]
+Un retour d'un prêt actif par l'ADMIN a été tenté après relogin.
+HTTP 401 malgré relogin sur cette séquence; résultat non confirmé comme test de règle.
+Noté comme blocage de session cookie à investiguer; ne remplace pas le test unitaire existant.

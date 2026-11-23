@@ -40,7 +40,7 @@
 - **Preuve :** `docs/preuves/an-03-baseline-435451e.txt` et `docs/preuves/an-03-current.txt`.
 - **Commit de baseline :** 435451e
 - **Commit de correction :** aucune correction
-- **Retest :** HTTP `201`, anomalie encore ouverte.
+- **Retest mesuré :** titre de 201 caractères → HTTP `201`; titre/auteur de 500 caractères → HTTP `201`. Les cas sont donc des échecs réels du code actuel, pas une hypothèse.
 - **Statut :** ouvert
 - **Exigence violée :** validation des données avant persistance et limites explicites des champs texte.
 - **Test de non-régression :** aucun jusqu'à la définition d'une limite métier.
