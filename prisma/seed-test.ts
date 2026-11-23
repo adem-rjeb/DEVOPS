@@ -6,9 +6,16 @@ const databaseUrl = process.env.DATABASE_URL;
 if (!databaseUrl) {
   throw new Error("DATABASE_URL est requis pour le seed de test.");
 }
-if (!databaseUrl.startsWith("file:") || databaseUrl.includes("dev.db")) {
+if (!databaseUrl.startsWith("file:")) {
+  throw new Error("Refus: DATABASE_URL doit désigner une base SQLite locale.");
+}
+const normalizedUrl = databaseUrl.toLowerCase();
+const isTestDatabase =
+  /(^|[/_-])(test|testing|temp|tmp)([-_./]|$)/.test(normalizedUrl) ||
+  normalizedUrl.includes("bibliotheque-step");
+if (!isTestDatabase || normalizedUrl.includes("dev.db")) {
   throw new Error(
-    "Refus de semer hors d'une base SQLite de test; dev.db est interdit.",
+    "Refus: DATABASE_URL doit désigner une base explicitement nommée test/temp/tmp ou bibliotheque-step.",
   );
 }
 
