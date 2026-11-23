@@ -1,22 +1,70 @@
-Date: 2026-11-23
-Commit: 7a790c8
-
-[Boundary unit tests]
+Date: 2026-11-23T21:33:19+0100
+Commit: d15c42740af1acf900abe2881932ffbd85fc497e
 Command: npm test -- tests/unit/boundaries.test.ts
-Result: 13 tests passed.
-AN-03 expected-failure tests:
-- 201-character title: test.fails.
-- 101-character author: test.fails.
 
-[Full coverage run]
-Command: npx vitest run --coverage --coverage.provider=v8 --coverage.include='lib/**' --coverage.reporter=text --coverage.reporter=text-summary --coverage.reporter=html --coverage.reportsDirectory=docs/preuves/coverage-html
-Full suite: 12 files, 59 tests passed.
+> library-management@1.0.0 test
+> vitest run tests/unit/boundaries.test.ts
 
-Coverage lib/:
-- Statements: 42.85%
-- Branches: 42.55%
-- Functions: 40.42%
-- Lines: 44.5%
 
-Plan threshold: 80% lines, 70% branches.
-Real result: threshold NOT met; it remains unchanged.
+[1m[46m RUN [49m[22m [36mv4.0.8 [39m[90m/Users/macbook/Desktop/DEVOPS[39m
+
+ [32m✓[39m tests/unit/boundaries.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m13 passed[39m[22m[90m (13)[39m
+[2m   Start at [22m 21:33:20
+[2m   Duration [22m 1.14s[2m (transform 108ms, setup 113ms, collect 180ms, tests 18ms, environment 639ms, prepare 7ms)[22m
+
+Proof: test.fails cases stay green only because the Zod schema accepts 201-character titles and 101-character authors.
+=== Direct Zod proof ===
+201 title: true
+101 author: true
+=== Coverage capture ===
+
+[1m[46m RUN [49m[22m [36mv4.0.8 [39m[90m/Users/macbook/Desktop/DEVOPS[39m
+      [2mCoverage enabled with [22m[33mv8[39m
+
+ [32m✓[39m tests/health.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 21[2mms[22m[39m
+ [32m✓[39m tests/permissions.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 47[2mms[22m[39m
+ [32m✓[39m tests/books.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 56[2mms[22m[39m
+ [32m✓[39m tests/admin-loans.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 74[2mms[22m[39m
+ [32m✓[39m tests/unit/boundaries.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 54[2mms[22m[39m
+ [32m✓[39m tests/component.test.tsx [2m([22m[2m1 test[22m[2m)[22m[33m 740[2mms[22m[39m
+     [33m[2m✓[22m[39m affiche les champs de connexion [33m 738[2mms[22m[39m
+ [32m✓[39m tests/loans.test.ts [2m([22m[2m19 tests[22m[2m)[22m[32m 28[2mms[22m[39m
+ [32m✓[39m tests/stats.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 39[2mms[22m[39m
+ [32m✓[39m tests/unit/anomaly-regression.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32m✓[39m tests/rate-limit.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32m✓[39m tests/reservations.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m tests/auth.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 3259[2mms[22m[39m
+     [33m[2m✓[22m[39m hashes passwords instead of storing plaintext [33m 2090[2mms[22m[39m
+     [33m[2m✓[22m[39m rejects an incorrect password [33m 1166[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m12 passed[39m[22m[90m (12)[39m
+[2m      Tests [22m [1m[32m59 passed[39m[22m[90m (59)[39m
+[2m   Start at [22m 21:33:32
+[2m   Duration [22m 6.66s[2m (transform 624ms, setup 3.10s, collect 3.21s, tests 4.34s, environment 21.97s, prepare 1.06s)[22m
+
+[34m % [39m[2mCoverage report from [22m[33mv8[39m
+-----------------|---------|----------|---------|---------|---------------------
+File             | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s   
+-----------------|---------|----------|---------|---------|---------------------
+All files        |   42.85 |    42.55 |   40.42 |    44.5 |                     
+ admin-loans.ts  |   36.36 |        0 |   33.33 |      50 | 23-31               
+ auth.ts         |   17.85 |     5.55 |   28.57 |      20 | 26-75               
+ books.ts        |      30 |       60 |   33.33 |   29.41 | 12,23-55            
+ loans.ts        |   43.42 |    53.57 |   53.33 |   42.37 | ...2,62-127,163-216 
+ logger.ts       |       0 |      100 |       0 |       0 | 9                   
+ prisma.ts       |     100 |    66.66 |     100 |     100 | 8-11                
+ rate-limit.ts   |    87.5 |    88.88 |      75 |   93.33 | 11                  
+ reservations.ts |   28.57 |    36.84 |   28.57 |   25.92 | 23-105              
+ stats.ts        |   54.54 |       25 |      25 |      60 | 21,28-29,43         
+ validation.ts   |     100 |      100 |     100 |     100 |                     
+-----------------|---------|----------|---------|---------|---------------------
+
+=============================== Coverage summary ===============================
+Statements   : 42.85% ( 90/210 )
+Branches     : 42.55% ( 60/141 )
+Functions    : 40.42% ( 19/47 )
+Lines        : 44.5% ( 77/173 )
+================================================================================

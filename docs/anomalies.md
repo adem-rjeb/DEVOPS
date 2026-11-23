@@ -82,8 +82,8 @@
 - **Attendu :** HTTP `401` avec JSON `{"error":"Authentification requise."}`.
 - **Réel :** HTTP `307 Temporary Redirect`, en-tête `location: /login`, corps `/login`.
 - **Sévérité :** majeure
-- **Priorité :** P1
-- **Preuve :** `docs/preuves/step6-live-campaign.txt`.
+- **Priorité :** P2
+- **Preuve :** `docs/preuves/step6-live-campaign.txt` et `docs/preuves/step7-pre-admin-visitor.txt`.
 - **Commit :** 7a790c8
 - **Retest :** non corrigé.
 - **Statut :** ouvert

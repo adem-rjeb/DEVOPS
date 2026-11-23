@@ -1,0 +1,29 @@
+Date: 2026-11-23T21:34:40+0100
+Commit: d15c42740af1acf900abe2881932ffbd85fc497e
+Database: /tmp/bibliotheque-pre7.db
+=== ADMIN PATCH other member active loan ===
+HTTP/1.1 200 OK
+Vary: rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding
+content-type: application/json
+Date: Mon, 23 Nov 2026 20:34:41 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+Transfer-Encoding: chunked
+
+{"ok":true}=== VISITOR GET /api/loans ===
+HTTP/1.1 307 Temporary Redirect
+location: /login
+Date: Mon, 23 Nov 2026 20:34:41 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+Transfer-Encoding: chunked
+
+/login=== VISITOR GET /api/books ===
+HTTP/1.1 307 Temporary Redirect
+location: /login
+Date: Mon, 23 Nov 2026 20:34:41 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+Transfer-Encoding: chunked
+
+/login

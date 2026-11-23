@@ -28,11 +28,11 @@
 
 ## 4. Rôles
 
-| Rôle | Autorisations principales | Interdictions principales |
-|---|---|---|
-| `MEMBRE` | Rechercher, emprunter, consulter ses prêts, retourner ses prêts | Gérer le catalogue, emprunter plus de trois livres actifs, emprunter plusieurs fois le même livre simultanément |
-| `ADMIN` | Gérer les livres et consulter les emprunts selon les routes autorisées | Emprunter un livre |
-| Visiteur | Accéder aux pages publiques | Appeler les routes protégées ou modifier les données |
+| Rôle     | Autorisations principales                                              | Interdictions principales                                                                                       |
+| -------- | ---------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `MEMBRE` | Rechercher, emprunter, consulter ses prêts, retourner ses prêts        | Gérer le catalogue, emprunter plus de trois livres actifs, emprunter plusieurs fois le même livre simultanément |
+| `ADMIN`  | Gérer les livres et consulter les emprunts selon les routes autorisées | Emprunter un livre                                                                                              |
+| Visiteur | Accéder aux pages publiques                                            | Appeler les routes protégées ou modifier les données                                                            |
 
 ## 5. Règles métier principales
 
@@ -62,7 +62,7 @@ Le domaine « réclamation » est remplacé par un catalogue de bibliothèque.
 - Next.js 16.0.1, React 19.2.0, TypeScript 5.9.3.
 - Prisma 6.19.3 dans le code courant; SQLite en local.
 - PostgreSQL fourni pour Docker/deploiement.
-- Vitest 4.1.12 et Playwright 1.65.1.
+- Vitest 4.0.8 avec @vitest/coverage-v8 4.0.8 et Playwright 1.65.1.
 
 ## 8. Droit de retour
 

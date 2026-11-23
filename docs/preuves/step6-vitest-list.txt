@@ -1,0 +1,59 @@
+tests/auth.test.ts > authentification > hashes passwords instead of storing plaintext
+tests/auth.test.ts > authentification > rejects an incorrect password
+tests/health.test.ts > GET /api/health > returns application and database status
+tests/unit/boundaries.test.ts > Bornes des emprunts > AN-04 CT-09 autorise deux emprunts actifs
+tests/unit/boundaries.test.ts > Bornes des emprunts > AN-04 CT-10 autorise exactement trois emprunts actifs
+tests/unit/boundaries.test.ts > Bornes des emprunts > AN-04 CT-11 refuse le quatrième emprunt actif
+tests/unit/boundaries.test.ts > Bornes du stock > CT-12 accepte le stock zéro
+tests/unit/boundaries.test.ts > Bornes du stock > CT-13 accepte le stock un
+tests/unit/boundaries.test.ts > Bornes titre/auteur AN-03 > AN-03 CT-18 accepte exactement un caractère de titre
+tests/unit/boundaries.test.ts > Bornes titre/auteur AN-03 > AN-03 CT-19 refuse un titre de 201 caractères
+tests/unit/boundaries.test.ts > Bornes titre/auteur AN-03 > AN-03 CT-18 accepte exactement 200 caractères
+tests/unit/boundaries.test.ts > Bornes titre/auteur AN-03 > AN-03 CT-20 refuse un titre vide
+tests/unit/boundaries.test.ts > Bornes titre/auteur AN-03 > AN-03 refuse un auteur de 101 caractères
+tests/unit/boundaries.test.ts > Bornes titre/auteur AN-03 > AN-03 accepte exactement 100 caractères d'auteur
+tests/unit/boundaries.test.ts > Bornes titre/auteur AN-03 > AN-03 accepte exactement un caractère d'auteur
+tests/unit/boundaries.test.ts > Bornes titre/auteur AN-03 > AN-03 refuse un auteur vide
+tests/component.test.tsx > AuthForm > affiche les champs de connexion
+tests/books.test.ts > livres > recherche par titre ou auteur
+tests/books.test.ts > livres > protège la création contre un membre
+tests/books.test.ts > livres > protège la modification contre un membre
+tests/books.test.ts > livres > protège la suppression contre un membre
+tests/permissions.test.ts > permissions des emprunts > refuse un emprunt pour un administrateur
+tests/permissions.test.ts > permissions des emprunts > refuse qu'un membre retourne le prêt d'un autre membre
+tests/permissions.test.ts > permissions des emprunts > refuse la prolongation d'un prêt en retard
+tests/permissions.test.ts > permissions des emprunts > autorise un administrateur à retourner un prêt
+tests/admin-loans.test.ts > emprunts administrateur > refuse l'accès à un membre
+tests/admin-loans.test.ts > emprunts administrateur > autorise un administrateur
+tests/admin-loans.test.ts > emprunts administrateur > autorise l'export CSV pour un administrateur
+tests/loans.test.ts > règles d'emprunt > refuse un livre déjà emprunté
+tests/loans.test.ts > règles d'emprunt > refuse le quatrième emprunt actif
+tests/loans.test.ts > règles d'emprunt > crée un emprunt valide
+tests/loans.test.ts > règles d'emprunt > calcule une échéance 14 jours après l'emprunt
+tests/loans.test.ts > règles d'emprunt > marque un emprunt dépassé comme LATE
+tests/loans.test.ts > règles d'emprunt > interdit un nouvel emprunt avec un retard
+tests/loans.test.ts > règles d'emprunt > interdit un emprunt sans exemplaire disponible
+tests/loans.test.ts > règles d'emprunt > augmente le stock disponible au retour
+tests/loans.test.ts > règles d'emprunt > refuse l'emprunt réservé pour un autre membre
+tests/loans.test.ts > règles d'emprunt > refuse l'emprunt à un administrateur
+tests/loans.test.ts > règles d'emprunt > refuse le même livre emprunté simultanément
+tests/loans.test.ts > règles d'emprunt > autorise le propriétaire ou un administrateur à retourner
+tests/loans.test.ts > règles d'emprunt > refuse qu'un autre membre retourne un prêt
+tests/loans.test.ts > règles d'emprunt > refuse la suppression d'un livre avec un prêt actif
+tests/loans.test.ts > règles d'emprunt > prolonge l'échéance de 7 jours
+tests/loans.test.ts > règles d'emprunt > refuse de prolonger un prêt en retard
+tests/loans.test.ts > règles d'emprunt > refuse plus de 2 prolongations
+tests/loans.test.ts > règles d'emprunt > autorise une prolongation valide
+tests/loans.test.ts > règles d'emprunt > garantit que le stock reste dans ses bornes
+tests/stats.test.ts > statistiques administrateur > refuse l'accès à un membre
+tests/stats.test.ts > statistiques administrateur > autorise un administrateur
+tests/unit/anomaly-regression.test.ts > régressions des anomalies > AN-01 refuse l'emprunt d'un administrateur
+tests/unit/anomaly-regression.test.ts > régressions des anomalies > AN-02 refuse la suppression d'un livre avec emprunt actif
+tests/reservations.test.ts > réservations > prévoit une fenêtre READY de 48 heures
+tests/reservations.test.ts > réservations > refuse une réservation si le livre est disponible
+tests/reservations.test.ts > réservations > refuse une réservation pour un administrateur
+tests/reservations.test.ts > réservations > refuse une seconde réservation active du même livre
+tests/reservations.test.ts > réservations > autorise une réservation valide
+tests/rate-limit.test.ts > limitation des tentatives de connexion > autorise jusqu'à 5 tentatives
+tests/rate-limit.test.ts > limitation des tentatives de connexion > bloque la sixième tentative
+tests/rate-limit.test.ts > limitation des tentatives de connexion > réinitialise après la fenêtre
