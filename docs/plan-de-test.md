@@ -86,11 +86,11 @@
 
 | Priorité | Définition | Exemple |
 |---|---|---|
-| P1 | Risque critique pour permissions, intégrité ou parcours principal; correction avant validation | AN-01, AN-02, AN-03 |
-| P2 | Impact réel mais contournable ou limité; correction planifiée avant livraison | AN-05 |
+| P1 | Risque critique pour permissions, intégrité ou parcours principal; correction avant validation | AN-01, AN-02 |
+| P2 | Impact réel mais contournable ou limité; correction planifiée avant livraison | AN-03, AN-05 |
 | P3 | Faible impact cosmétique/UX ou entretien; correction différable | AN-04 |
 
-Reclassification des anomalies existantes : aucune modification. AN-01 et AN-02 restent bloquantes/P1, AN-03 majeure/P1, AN-04 mineure/P3, AN-05 mineure/P2.
+Reclassification des anomalies existantes : AN-03 passe de P1 à P2 parce que la limite manquante dégrade la validation des champs sans bloquer le parcours emprunt/retour ni la sécurité. AN-01 et AN-02 restent bloquantes/P1, AN-03 majeure/P2, AN-04 mineure/P3, AN-05 mineure/P2.
 
 ## 10. Critères de décision fixes
 

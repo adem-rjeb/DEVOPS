@@ -36,7 +36,7 @@
 - **Attendu :** HTTP `400` après définition d'une limite vérifiable.
 - **Réel :** HTTP `201`, les champs de 500 caractères sont acceptés.
 - **Sévérité :** majeure
-- **Priorité :** P1
+- **Priorité :** P2
 - **Preuve :** `docs/preuves/an-03-baseline-435451e.txt` et `docs/preuves/an-03-current.txt`.
 - **Commit de baseline :** 435451e
 - **Commit de correction :** aucune correction
