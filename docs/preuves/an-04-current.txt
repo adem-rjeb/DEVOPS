@@ -1,0 +1,6 @@
+Commit: 9c3cd95
+Anomalie: AN-04
+Commande: POST /api/books avec corps JSON malformé "{bad"
+HTTP status: 400
+JSON body:
+{"error":"Invalid input: expected object, received null"}

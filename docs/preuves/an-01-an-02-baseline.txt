@@ -1,8 +1,9 @@
-Date: 2026-11-23T20:35:10+01:00
+Date: 2026-11-23T20:40:05+01:00
 Commit: 435451e
 Worktree: /Users/macbook/Desktop/DEVOPS-baseline-before-fixes
 Command: npx vitest run tests/anomaly-regression.test.ts
 Exit status: 1
+Signification: échec réel des deux défenses métier, sans erreur d'import ni de mock.
 
  RUN  v4.1.12 /Users/macbook/Desktop/DEVOPS-baseline-before-fixes
 
@@ -17,7 +18,7 @@ undefined
 
  FAIL  tests/anomaly-regression.test.ts > AN-01 / AN-02 sur le baseline > AN-02 refuse la suppression d'un livre avec emprunt actif
 AssertionError: promise resolved instead of rejecting
-The baseline deleted the book despite its active loan.
+AN-02: la Promise est résolue avec le livre supprimé au lieu d'être rejetée.
 
 Test Files  1 failed (1)
 Tests       2 failed (2)

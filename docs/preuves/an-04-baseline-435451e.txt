@@ -1,0 +1,6 @@
+Commit: 435451e
+Anomalie: AN-04
+Commande: POST /api/books avec corps JSON malformé "{bad"
+HTTP status: 409
+JSON body:
+{"error":"Impossible de créer le livre."}

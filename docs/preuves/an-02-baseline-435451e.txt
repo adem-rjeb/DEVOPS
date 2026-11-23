@@ -1,0 +1,7 @@
+Date: 2026-11-23T19:24:27+01:00
+Commit: 435451e
+Anomalie: AN-02
+Commande: curl -b admin-cookie -X DELETE http://127.0.0.1:3101/api/books/<id-livre-actif>
+HTTP status: 200
+JSON body:
+{"ok":true}

@@ -1,0 +1,8 @@
+Date: 2026-11-23T20:30:49+01:00
+Commit: 9c3cd95
+Fix commit: 76c98df
+Anomalie: AN-02
+Commande: curl -b admin-cookie -X DELETE http://127.0.0.1:3102/api/books/<id-livre-actif>
+HTTP status: 409
+JSON body:
+{"error":"Impossible de supprimer un livre avec des emprunts actifs."}

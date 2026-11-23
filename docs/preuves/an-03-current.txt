@@ -1,0 +1,6 @@
+Commit: 9c3cd95
+Anomalie: AN-03
+Commande: POST /api/books avec title et author de 500 caractères
+HTTP status: 201
+JSON body:
+{"title":"<500 caractères>","author":"<500 caractères>","totalCopies":1,"availableCopies":1}

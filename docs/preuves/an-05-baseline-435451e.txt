@@ -1,0 +1,5 @@
+Commit: 435451e
+Anomalie: AN-05
+Observation: pas de champ availableCopies ni de badge dans ce baseline.
+HTTP status: non applicable
+JSON body: non applicable

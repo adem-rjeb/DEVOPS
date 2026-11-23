@@ -1,0 +1,4 @@
+Commit: 76c98df
+Observation: captures du 2026-11-19 montrant une contradiction badge/stock.
+HTTP status: non applicable
+JSON body: non applicable

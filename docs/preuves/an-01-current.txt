@@ -1,0 +1,8 @@
+Date: 2026-11-23T20:30:49+01:00
+Commit: 9c3cd95
+Fix commit: 76c98df
+Anomalie: AN-01
+Commande: curl -b admin-cookie -H "Content-Type: application/json" -d '{"bookId":"<id-livre>"}' http://127.0.0.1:3102/api/loans
+HTTP status: 403
+JSON body:
+{"error":"Les administrateurs ne peuvent pas emprunter de livres."}

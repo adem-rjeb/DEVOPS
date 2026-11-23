@@ -1,0 +1,7 @@
+Date: 2026-11-23T19:23:59+01:00
+Commit: 435451e
+Anomalie: AN-01
+Commande: curl -b admin-cookie -H "Content-Type: application/json" -d '{"bookId":"<id-livre>"}' http://127.0.0.1:3101/api/loans
+HTTP status: 201
+JSON body:
+{"id":"<id-prêt>","userId":"<id-admin>","bookId":"<id-livre>","borrowedAt":"2026-11-23T19:23:59.393Z","returnedAt":null}
