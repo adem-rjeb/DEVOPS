@@ -1,0 +1,42 @@
+
+[1m[46m RUN [49m[22m [36mv4.0.8 [39m[90m/Users/macbook/Desktop/DEVOPS[39m
+      [2mCoverage enabled with [22m[33mv8[39m
+
+ [32m✓[39m tests/integration/prisma.integration.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 280[2mms[22m[39m
+ [32m✓[39m tests/permissions.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 80[2mms[22m[39m
+ [32m✓[39m tests/unit/boundaries.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 68[2mms[22m[39m
+ [32m✓[39m tests/books.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 113[2mms[22m[39m
+ [32m✓[39m tests/admin-loans.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 50[2mms[22m[39m
+ [32m✓[39m tests/component.test.tsx [2m([22m[2m1 test[22m[2m)[22m[33m 999[2mms[22m[39m
+     [33m[2m✓[22m[39m affiche les champs de connexion [33m 997[2mms[22m[39m
+ [32m✓[39m tests/reservations.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m tests/unit/anomaly-regression.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32m✓[39m tests/stats.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+ [32m✓[39m tests/health.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 41[2mms[22m[39m
+ [32m✓[39m tests/loans.test.ts [2m([22m[2m19 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m tests/rate-limit.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32m✓[39m tests/auth.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 3883[2mms[22m[39m
+     [33m[2m✓[22m[39m hashes passwords instead of storing plaintext [33m 2533[2mms[22m[39m
+     [33m[2m✓[22m[39m rejects an incorrect password [33m 1347[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m13 passed[39m[22m[90m (13)[39m
+[2m      Tests [22m [1m[32m64 passed[39m[22m[90m (64)[39m
+[2m   Start at [22m 21:36:46
+[2m   Duration [22m 7.30s[2m (transform 766ms, setup 3.40s, collect 3.56s, tests 5.58s, environment 23.39s, prepare 1.78s)[22m
+
+[34m % [39m[2mCoverage report from [22m[33mv8[39m
+-----------------|---------|----------|---------|---------|-------------------
+File             | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-----------------|---------|----------|---------|---------|-------------------
+All files        |   63.33 |    51.77 |    61.7 |    68.2 |                   
+ admin-loans.ts  |   36.36 |        0 |   33.33 |      50 | 23-31             
+ auth.ts         |   17.85 |     5.55 |   28.57 |      20 | 26-75             
+ books.ts        |      85 |    73.33 |     100 |   94.11 | 12                
+ loans.ts        |   76.31 |    69.64 |   86.66 |   83.05 | 40-42,121,163-183 
+ logger.ts       |       0 |      100 |       0 |       0 | 9                 
+ prisma.ts       |     100 |    66.66 |     100 |     100 | 8-11              
+ rate-limit.ts   |    87.5 |    88.88 |      75 |   93.33 | 11                
+ reservations.ts |   48.57 |    47.36 |   42.85 |   48.14 | 23-71,105         
+ stats.ts        |   54.54 |       25 |      25 |      60 | 21,28-29,43       
+ validation.ts   |     100 |      100 |     100 |     100 |                   
+-----------------|---------|----------|---------|---------|-------------------

@@ -1,0 +1,23 @@
+Date: 2026-11-23T21:36:46+01:00
+Commit: 6b78128
+Database: /tmp/bibliotheque-integration.db
+
+Command: DATABASE_URL='file:/tmp/bibliotheque-integration.db' TEST_DATABASE_URL='file:/tmp/bibliotheque-integration.db' npm test -- tests/integration/prisma.integration.test.ts
+Test Files: 1 passed (1)
+Tests: 5 passed (5)
+Duration: 1.27 s
+
+Coverage command:
+DATABASE_URL='file:/tmp/bibliotheque-integration.db' TEST_DATABASE_URL='file:/tmp/bibliotheque-integration.db' npx vitest run --coverage --coverage.provider=v8 --coverage.include='lib/**' --coverage.reporter=text
+
+Full suite: 13 test files, 64 tests passed.
+Coverage lib/:
+- Lines: 68.2%
+- Branches: 51.77%
+- Statements: 63.33%
+- Functions: 61.7%
+Threshold: 80% lines / 70% branches; NOT met.
+
+Cleanup command: DATABASE_URL='file:/tmp/bibliotheque-integration.db' npm run remove-admin-loans
+Output: 1 prêt(s) administrateur supprimé(s).
+Verification: adminLoans=0, Cleanup Loan availableCopies=1, totalCopies=1.
