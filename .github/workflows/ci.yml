@@ -17,6 +17,11 @@ jobs:
 
       - run: npm ci
       - run: cp .env.example .env
+      - name: Configure integration test database
+        run: |
+          echo 'DATABASE_URL=file:/tmp/bibliotheque-integration.db' >> .env
+          echo 'TEST_DATABASE_URL=file:/tmp/bibliotheque-integration.db' >> .env
+      - run: rm -f /tmp/bibliotheque-integration.db
       - run: npx prisma generate
       - run: npx prisma db push
       - name: Format check

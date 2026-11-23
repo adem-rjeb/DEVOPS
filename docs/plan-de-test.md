@@ -20,14 +20,14 @@
 
 ## 2. Niveaux de test
 
-| Niveau | Outil | Couverture Bibliothèque |
-|---|---|---|
-| Unitaire | Vitest | Fonctions d'échéance, statut, limite 3, bornes, validation Zod, permissions |
-| Intégration | Vitest + Prisma + SQLite séparée | Transactions emprunt/retour, persistance, stock, suppression active, contraintes |
-| Système/API | Bruno CLI | Routes auth, books, loans, health, codes 400/401/403/404/409 |
-| Système UI | Playwright | Parcours inscription/connexion/recherche/emprunt/« Mes emprunts »/retour |
-| Système | k6 | Charge locale sur `GET /api/books` |
-| Acceptation | Journal humain + Playwright | Un membre valide son besoin métier; un administrateur valide la gestion du catalogue |
+| Niveau      | Outil                            | Couverture Bibliothèque                                                              |
+| ----------- | -------------------------------- | ------------------------------------------------------------------------------------ |
+| Unitaire    | Vitest                           | Fonctions d'échéance, statut, limite 3, bornes, validation Zod, permissions          |
+| Intégration | Vitest + Prisma + SQLite séparée | Transactions emprunt/retour, persistance, stock, suppression active, contraintes     |
+| Système/API | Postman + Newman                 | Routes auth, books, loans, health, codes 400/401/403/404/409                         |
+| Système UI  | Playwright                       | Parcours inscription/connexion/recherche/emprunt/« Mes emprunts »/retour             |
+| Système     | k6                               | Charge locale sur `GET /api/books`                                                   |
+| Acceptation | Journal humain + Playwright      | Un membre valide son besoin métier; un administrateur valide la gestion du catalogue |
 
 ## 3. Environnement
 
@@ -38,11 +38,11 @@
 
 ## 4. Rôles et responsabilités
 
-| Rôle | Responsabilité |
-|---|---|
+| Rôle             | Responsabilité                                                              |
+| ---------------- | --------------------------------------------------------------------------- |
 | Étudiant/testeur | Designer les cas, exécuter, documenter les preuves et classer les anomalies |
-| Développeur | Corriger après reproduction, puis rejouer les tests ciblés |
-| Encadrant | Valider les critères, arbitrer les ambiguïtés et accepter/refuser |
+| Développeur      | Corriger après reproduction, puis rejouer les tests ciblés                  |
+| Encadrant        | Valider les critères, arbitrer les ambiguïtés et accepter/refuser           |
 
 ## 5. Planning sur 10 semaines
 
@@ -76,19 +76,19 @@
 
 ## 8. Échelle de gravité
 
-| Gravité | Définition | Exemple AN-xx |
-|---|---|---|
-| Bloquante | Empêche un parcours critique, contourne une autorisation, corrompt/perd les données ou bloque toute validation | AN-01 (admin emprunte); AN-02 (livre actif supprimé) |
-| Majeure | Dégrade une règle importante ou une fonction principale sans arrêter totalement l'application | AN-03 (longueur texte non bornée) |
-| Mineure | Gène l'usage ou la lisibilité, avec faible impact sur les données et les parcours critiques | AN-04 (message anglais); AN-05 (incohérence d'affichage) |
+| Gravité   | Définition                                                                                                     | Exemple AN-xx                                            |
+| --------- | -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| Bloquante | Empêche un parcours critique, contourne une autorisation, corrompt/perd les données ou bloque toute validation | AN-01 (admin emprunte); AN-02 (livre actif supprimé)     |
+| Majeure   | Dégrade une règle importante ou une fonction principale sans arrêter totalement l'application                  | AN-03 (longueur texte non bornée)                        |
+| Mineure   | Gène l'usage ou la lisibilité, avec faible impact sur les données et les parcours critiques                    | AN-04 (message anglais); AN-05 (incohérence d'affichage) |
 
 ## 9. Échelle de priorité
 
-| Priorité | Définition | Exemple |
-|---|---|---|
-| P1 | Risque critique pour permissions, intégrité ou parcours principal; correction avant validation | AN-01, AN-02 |
-| P2 | Impact réel mais contournable ou limité; correction planifiée avant livraison | AN-03, AN-05 |
-| P3 | Faible impact cosmétique/UX ou entretien; correction différable | AN-04 |
+| Priorité | Définition                                                                                     | Exemple      |
+| -------- | ---------------------------------------------------------------------------------------------- | ------------ |
+| P1       | Risque critique pour permissions, intégrité ou parcours principal; correction avant validation | AN-01, AN-02 |
+| P2       | Impact réel mais contournable ou limité; correction planifiée avant livraison                  | AN-03, AN-05 |
+| P3       | Faible impact cosmétique/UX ou entretien; correction différable                                | AN-04        |
 
 Reclassification des anomalies existantes : AN-03 passe de P1 à P2 parce que la limite manquante dégrade la validation des champs sans bloquer le parcours emprunt/retour ni la sécurité. AN-01 et AN-02 restent bloquantes/P1, AN-03 majeure/P2, AN-04 mineure/P3, AN-05 mineure/P2.
 

@@ -4,15 +4,31 @@ import { borrowBook, returnBook } from "@/lib/loans";
 import { deleteBook, updateBookStock } from "@/lib/books";
 
 const databaseUrl = process.env.TEST_DATABASE_URL;
+const appDatabaseUrl = process.env.DATABASE_URL;
 
-if (!databaseUrl) {
-  throw new Error("TEST_DATABASE_URL est requis pour les tests d'intégration.");
+if (!databaseUrl || !appDatabaseUrl) {
+  throw new Error(
+    "DATABASE_URL et TEST_DATABASE_URL sont requis pour les tests d'intégration.",
+  );
 }
-if (!databaseUrl.includes("test") && !databaseUrl.includes("tmp")) {
-  throw new Error("TEST_DATABASE_URL doit désigner une base de test.");
+if (databaseUrl !== appDatabaseUrl) {
+  throw new Error(
+    "DATABASE_URL et TEST_DATABASE_URL doivent désigner la même base de test.",
+  );
 }
 if (databaseUrl.includes("dev.db")) {
   throw new Error("prisma/dev.db est interdit dans les tests d'intégration.");
+}
+if (
+  !databaseUrl.startsWith("file:") ||
+  (!databaseUrl.includes("test") &&
+    !databaseUrl.includes("tmp") &&
+    !databaseUrl.includes("integr") &&
+    !databaseUrl.includes("bibliotheque-step"))
+) {
+  throw new Error(
+    "TEST_DATABASE_URL doit désigner explicitement une base SQLite de test.",
+  );
 }
 
 const prisma = new PrismaClient({

@@ -88,4 +88,5 @@
 - **Retest :** non corrigé.
 - **Statut :** ouvert
 - **Exigence violée :** EX-01 exige une route protégée sans cookie retourne HTTP `401`.
+- **Échelle :** majeure/P2: redirection fonctionnelle pouvant gêner les clients API, mais aucune donnée n'est exposée.
 - **Test de non-régression :** à ajouter sans cookie sur les deux routes API.

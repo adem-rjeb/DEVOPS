@@ -1,0 +1,7 @@
+Date: 2026-11-23T21:40:22+01:00
+Commit: 6b78128
+Coverage phase: post-integration Step 7
+Folder: docs/preuves/coverage-step7-2026-11-23-214008/
+Lines: 68.2%
+Branches: 51.77%
+Thresholds: 80% lines / 70% branches — non atteints
