@@ -68,7 +68,7 @@
 - **Réel :** capture intermédiaire montrant une contradiction apparente.
 - **Sévérité :** mineure
 - **Priorité :** P2
-- **Preuve :** [Capture du 2026-11-19](/Users/macbook/Desktop/DEVOPS/docs/preuves/Capture_d_ecran_2026-11-19_a_21.31.02.png).
+- **Preuve :** [Capture administrateur du 2026-11-19 à 21.31.02](/Users/macbook/Desktop/DEVOPS/docs/preuves/Capture_d_ecran_2026-11-19_a_21.31.02.png). La capture membre du 2026-11-19 à 21.32.24 n'a pas été trouvée dans les emplacements accessibles; elle doit être ajoutée avant de compléter définitivement l'évidence AN-05.
 - **Commit de baseline :** 435451e
 - **Commit de correction :** aucune reproduction sur le baseline
 - **Retest :** non reproductible sur 435451e, sans champ `availableCopies` ni badge.

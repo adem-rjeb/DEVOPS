@@ -41,6 +41,7 @@
 - Un membre ne peut pas emprunter deux fois simultanément le même livre.
 - Un prêt est actif tant que `returnedAt` est nul.
 - Un prêt est en retard lorsque `dueDate` est dépassée.
+- Aucun champ de statut `ACTIVE`, `LATE` ou `RETURNED` n'est stocké dans `Loan`; `getLoanStatus` les calcule à partir de `returnedAt`, `dueDate` et l'heure courante.
 - Le stock disponible doit rester compris entre zéro et le stock total.
 - Seul l'emprunteur ou un administrateur autorisé peut retourner le prêt selon les routes prévues.
 - Un livre avec un prêt actif ne peut pas être supprimé.
