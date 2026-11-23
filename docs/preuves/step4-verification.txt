@@ -1,0 +1,14 @@
+Date: 2026-11-23T21:18:00+01:00
+Database: /tmp/bibliotheque-step4.db
+Command: DATABASE_URL='file:/tmp/bibliotheque-step4.db' npx prisma db push
+Result: SQLite database created and schema synchronized.
+
+Command: DATABASE_URL='file:/tmp/bibliotheque-step4.db' npm run seed:test
+Result:
+Seed test terminé: 2 membres, 1 admin, 4 livres, stock0=cmwtpfsst0003t69tv0bua1nz, stock1=cmwtpfsst0005t69thgr5jq17, livreLibre=cmwtpfsst0006t69t3dl7w6bd.
+
+Command: row count query
+Result:
+{"users":3,"books":4,"loans":2}
+
+Dev database untouched: /tmp/bibliotheque-step4.db was used instead of prisma/dev.db.

@@ -11,6 +11,7 @@
     "test:watch": "vitest",
     "format": "prettier --write .",
     "seed": "tsx prisma/seed.ts",
+    "seed:test": "tsx prisma/seed-test.ts",
     "test:e2e": "playwright test",
     "remove-admin-loans": "node prisma/remove-admin-loans.mjs"
   },
