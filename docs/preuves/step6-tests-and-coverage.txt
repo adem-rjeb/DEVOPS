@@ -1,0 +1,22 @@
+Date: 2026-11-23
+Commit: 7a790c8
+
+[Boundary unit tests]
+Command: npm test -- tests/unit/boundaries.test.ts
+Result: 13 tests passed.
+AN-03 expected-failure tests:
+- 201-character title: test.fails.
+- 101-character author: test.fails.
+
+[Full coverage run]
+Command: npx vitest run --coverage --coverage.provider=v8 --coverage.include='lib/**' --coverage.reporter=text --coverage.reporter=text-summary --coverage.reporter=html --coverage.reportsDirectory=docs/preuves/coverage-html
+Full suite: 12 files, 59 tests passed.
+
+Coverage lib/:
+- Statements: 42.85%
+- Branches: 42.55%
+- Functions: 40.42%
+- Lines: 44.5%
+
+Plan threshold: 80% lines, 70% branches.
+Real result: threshold NOT met; it remains unchanged.
