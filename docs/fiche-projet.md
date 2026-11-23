@@ -45,3 +45,41 @@
 - Seul l'emprunteur ou un administrateur autorisé peut retourner le prêt selon les routes prévues.
 - Un livre avec un prêt actif ne peut pas être supprimé.
 
+## 6. Écarts avec RéclaGest
+
+Le domaine « réclamation » est remplacé par un catalogue de bibliothèque.
+
+- RéclaGest ne dispose pas des rôles `MEMBRE` et `ADMIN` décrits ici.
+- Les emprunts remplacent les affectations; l'état est calculé depuis `returnedAt` et `dueDate`.
+- Limite adaptée : trois emprunts actifs maximum.
+- Stock adapté : `totalCopies` et `availableCopies`.
+- Réservation et prolongation sont hors périmètre principal ou basse priorité.
+
+## 7. Environnement
+
+- Node.js local : 20.20.2; Node.js CI : 22.
+- Next.js 16.0.1, React 19.2.0, TypeScript 5.9.3.
+- Prisma 6.19.3 dans le code courant; SQLite en local.
+- PostgreSQL fourni pour Docker/deploiement.
+- Vitest 4.1.12 et Playwright 1.65.1.
+
+## 8. Droit de retour
+
+- Un membre ne peut retourner que son propre prêt actif.
+- Un administrateur peut retourner un prêt actif quel que soit son emprunteur.
+- Le retour fixe `returnedAt` et incrémente le stock sans dépasser `totalCopies`.
+
+## 9. Droits administrateur
+
+- Créer, modifier, rechercher et supprimer des livres.
+- Refuser la suppression d'un livre ayant un prêt actif.
+- Consulter les emprunts administratifs.
+- Retourner un prêt de membre.
+- Ne jamais emprunter directement.
+
+## 10. Exigences ambiguës
+
+- Longueur maximale du titre et de l'auteur.
+- Texte français exact des erreurs Zod.
+- Comportement exact en cas d'emprunts simultanés.
+- Bornes exactes lors d'une modification simultanée du stock.

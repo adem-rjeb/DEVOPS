@@ -19,7 +19,7 @@
 
 - **Étapes :** créer un prêt actif pour un livre, puis appeler `DELETE /api/books/<id>` comme administrateur.
 - **Attendu :** HTTP `409`; aucun prêt ni livre ne doit être supprimé.
-- **Réel :** HTTP `200`, avec suppression du livre sur 435451e. La suppression directe du Prisma a également été autorisée.
+- **Réel :** sur 435451e, l'API retourne HTTP `200` avec `{"ok":true}`. Le test Prisma confirme aussi que `prisma.book.delete` permet la suppression directe du livre malgré son prêt actif.
 - **Sévérité :** bloquante
 - **Priorité :** P1
 - **Preuve :** `docs/preuves/an-02-baseline-435451e.txt` et `docs/preuves/an-02-current.txt`.
@@ -49,7 +49,8 @@
 
 - **Étapes :** envoyer `{bad` à `POST /api/books` avec une session administrateur.
 - **Attendu :** HTTP `400` avec un message français clair.
-- **Réel :** HTTP `400`, message `Invalid input: expected object, received null`.
+- **Baseline :** HTTP `409`, avec `{"error":"Impossible de créer le livre."}`.
+- **Réel actuel :** HTTP `400`, message `Invalid input: expected object, received null`.
 - **Sévérité :** mineure
 - **Priorité :** P3
 - **Preuve :** `docs/preuves/an-04-baseline-435451e.txt` et `docs/preuves/an-04-current.txt`.
@@ -67,7 +68,7 @@
 - **Réel :** capture intermédiaire montrant une contradiction apparente.
 - **Sévérité :** mineure
 - **Priorité :** P2
-- **Preuve :** captures utilisateur du 2026-11-19; fichiers à ajouter dans `docs/preuves/`.
+- **Preuve :** [Capture du 2026-11-19](/Users/macbook/Desktop/DEVOPS/docs/preuves/Capture_d_ecran_2026-11-19_a_21.31.02.png).
 - **Commit de baseline :** 435451e
 - **Commit de correction :** aucune reproduction sur le baseline
 - **Retest :** non reproductible sur 435451e, sans champ `availableCopies` ni badge.
