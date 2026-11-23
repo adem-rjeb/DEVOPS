@@ -96,11 +96,12 @@ Reclassification des anomalies existantes : aucune modification. AN-01 et AN-02 
 
 Ces critères sont arrêtés avant la campagne finale.
 
-- **Seuil de couverture :** au moins 80 % des lignes et 70 % des branches sur les modules métier testés; 100 % des décisions P1 critiques administrateur/emprunt/stock.
-- **Défaut bloquant :** toute anomalie bloquante; contournement auth/permission; perte/corruption; emprunt hors règle; stock hors bornes; échec d'un parcours critique.
-- **Validation :** aucun défaut bloquant ou majeur ouvert; couverture atteinte; tous les cas P1 exécutés et réussis; seules des anomalies mineures documentées peuvent rester.
-- **Validation conditionnelle :** aucun défaut bloquant, au plus des défauts majeurs avec contournement documenté, impact et risque résiduels acceptés; une date de correction et un propriétaire sont définis; sinon la majeure empêche la validation.
-- **Refus :** au moins une anomalie bloquante ouverte, sécurité/permissions compromise, intégrité de données non assurée, parcours critique en échec ou seuil de couverture non atteint.
+- **Seuil de couverture :** le seuil final porte sur `lib/` (règles métier), avec au moins 80 % des lignes, 70 % des branches et 100 % des décisions P1 sur administrateur/emprunt/stock. Les nombres seront vérifiés en Step 6.
+- **Défaut bloquant :** anomalie qui viole une exigence P1 : contournement des permissions, violation de l'intégrité du stock, perte/corruption de données, ou arrêt du parcours critique emprunt/retour.
+- **Validation :** aucun défaut bloquant ou majeur ouvert; seuil de couverture atteint; tous les cas P1 exécutés avec succès; seules des anomalies mineures documentées peuvent rester.
+- **Validation conditionnelle :** aucun défaut bloquant, avec des défauts majeurs ou mineurs restants explicitement acceptés, contournement documenté, risque résiduel, propriétaire et date de correction.
+- **Refus :** au moins une anomalie bloquante ouverte, ou une sécurité/permission P1, perte/corruption P1, ou parcours critique P1 en échec.
+- **Couverture insuffisante :** campagne incomplète; les critères de sortie ne sont pas atteints. Cela devient un refus uniquement si les critères de la décision finale restent également insatisfaits ou si les exigences P1 ne peuvent pas être établies.
 
 ## 11. Données de test et reproductibilité
 
