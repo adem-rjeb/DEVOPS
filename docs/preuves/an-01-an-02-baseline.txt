@@ -1,0 +1,24 @@
+Date: 2026-11-23T20:35:10+01:00
+Commit: 435451e
+Worktree: /Users/macbook/Desktop/DEVOPS-baseline-before-fixes
+Command: npx vitest run tests/anomaly-regression.test.ts
+Exit status: 1
+
+ RUN  v4.1.12 /Users/macbook/Desktop/DEVOPS-baseline-before-fixes
+
+ ❯ tests/anomaly-regression.test.ts (2 tests | 2 failed) 37ms
+     × AN-01 refuse l'emprunt d'un administrateur 9ms
+     × AN-02 refuse la suppression d'un livre avec emprunt actif 27ms
+
+ FAIL  tests/anomaly-regression.test.ts > AN-01 / AN-02 sur le baseline > AN-01 refuse l'emprunt d'un administrateur
+AssertionError: expected [Function] to throw an error
+Received:
+undefined
+
+ FAIL  tests/anomaly-regression.test.ts > AN-01 / AN-02 sur le baseline > AN-02 refuse la suppression d'un livre avec emprunt actif
+AssertionError: promise resolved instead of rejecting
+The baseline deleted the book despite its active loan.
+
+Test Files  1 failed (1)
+Tests       2 failed (2)
+Duration    1.38 s

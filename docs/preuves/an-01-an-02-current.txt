@@ -1,0 +1,18 @@
+Date: 2026-11-23T20:35:26+01:00
+Commit: 9c3cd95
+Target fix commit: 76c98df
+Worktree: /Users/macbook/Desktop/DEVOPS
+Command: npm test -- tests/unit/anomaly-regression.test.ts
+Exit status: 0
+
+> library-management@1.0.0 test
+> vitest run tests/unit/anomaly-regression.test.ts
+
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to default to native.
+
+RUN  v4.1.12 /Users/macbook/Desktop/DEVOPS
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  20:35:26
+   Duration  1.44 s
