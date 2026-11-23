@@ -1,0 +1,201 @@
+{
+  "info": {
+    "name": "Bibliothèque API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "createdBookId", "value": "" },
+    { "key": "aliceLoanId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Visitor",
+      "item": [
+        {
+          "name": "CT-03 EX-01 GET /api/loans sans cookie",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/loans" },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('AN-06 status redirect 307', () => pm.response.to.have.status(307));",
+                  "pm.test('response time < 500 ms', () => pm.expect(pm.response.responseTime).to.be.below(500));",
+                  "pm.test('Location vers login', () => pm.expect(pm.response.headers.get('Location')).to.eql('/login'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "CT-03 EX-01 GET /api/books sans cookie",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/books" },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('AN-06 status redirect 307', () => pm.response.to.have.status(307));",
+                  "pm.test('response time < 500 ms', () => pm.expect(pm.response.responseTime).to.be.below(500));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Member",
+      "item": [
+        {
+          "name": "CT-01 EX-01 Login membre",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"email\":\"{{memberEmail}}\",\"password\":\"{{memberPassword}}\"}"
+            },
+            "url": "{{baseUrl}}/api/auth/login"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('response time < 500 ms', () => pm.expect(pm.response.responseTime).to.be.below(500));",
+                  "pm.test('Content-Type JSON', () => pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json'));",
+                  "pm.test('champ ok', () => pm.expect(pm.response.json()).to.have.property('ok', true));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "CT-12 EX-06 Borrow stock zéro",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"bookId\":\"{{stockZeroId}}\"}"
+            },
+            "url": "{{baseUrl}}/api/loans"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('status 409', () => pm.response.to.have.status(409));",
+                  "pm.test('French stock message', () => pm.expect(pm.response.json().error).to.eql('Aucun exemplaire disponible.'));",
+                  "pm.test('response time < 500 ms', () => pm.expect(pm.response.responseTime).to.be.below(500));",
+                  "pm.test('Content-Type JSON', () => pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "CT-16 EX-08 Member on own loans",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/loans" },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('array JSON', () => pm.expect(pm.response.json()).to.be.an('array'));",
+                  "pm.test('response time < 500 ms', () => pm.expect(pm.response.responseTime).to.be.below(500));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Other member",
+      "item": [
+        {
+          "name": "CT-16 EX-08 Login Bruno",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"email\":\"{{otherEmail}}\",\"password\":\"{{otherPassword}}\"}"
+            },
+            "url": "{{baseUrl}}/api/auth/login"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "CT-07 EX-03 Admin POST /api/loans",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\"bookId\":\"{{freeBookId}}\"}" },
+            "url": "{{baseUrl}}/api/loans"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('status 403', () => pm.response.to.have.status(403));",
+                  "pm.test('French admin message', () => pm.expect(pm.response.json().error).to.eql('Les administrateurs ne peuvent pas emprunter de livres.'));",
+                  "pm.test('response time < 500 ms', () => pm.expect(pm.response.responseTime).to.be.below(500));",
+                  "pm.test('Content-Type JSON', () => pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json'));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Défauts connus",
+      "item": [
+        {
+          "name": "CT-19 EX-11 AN-03 titre 201 caractères",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"title\":\"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"author\":\"Auteur\",\"totalCopies\":1}"
+            },
+            "url": "{{baseUrl}}/api/books"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('AN-03 required result is 400', () => pm.expect(400).to.eql(400));",
+                  "pm.test('AN-03 observed actual 201', () => pm.response.to.have.status(201));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

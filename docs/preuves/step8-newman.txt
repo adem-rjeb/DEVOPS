@@ -1,0 +1,92 @@
+newman
+
+Bibliothèque API
+
+❏ Visitor
+↳ CT-03 EX-01 GET /api/loans sans cookie
+  GET http://127.0.0.1:3108/api/loans [307 Temporary Redirect, 171B, 27ms]
+  ✓  AN-06 status redirect 307
+  ✓  response time < 500 ms
+  ✓  Location vers login
+
+↳ CT-03 EX-01 GET /api/books sans cookie
+  GET http://127.0.0.1:3108/api/books [307 Temporary Redirect, 171B, 9ms]
+  ✓  AN-06 status redirect 307
+  ✓  response time < 500 ms
+
+❏ Member
+↳ CT-01 EX-01 Login membre
+  POST http://127.0.0.1:3108/api/auth/login [200 OK, 628B, 436ms]
+  ✓  status 200
+  ✓  response time < 500 ms
+  ✓  Content-Type JSON
+  ✓  champ ok
+
+↳ CT-12 EX-06 Borrow stock zéro
+  POST http://127.0.0.1:3108/api/loans [409 Conflict, 337B, 31ms]
+  ✓  status 409
+  ✓  French stock message
+  ✓  response time < 500 ms
+  ✓  Content-Type JSON
+
+↳ CT-16 EX-08 Member on own loans
+  GET http://127.0.0.1:3108/api/loans [200 OK, 742B, 20ms]
+  ✓  status 200
+  ✓  array JSON
+  ✓  response time < 500 ms
+
+❏ Other member
+↳ CT-16 EX-08 Login Bruno
+  POST http://127.0.0.1:3108/api/auth/login [200 OK, 628B, 413ms]
+  ✓  status 200
+
+❏ Admin
+↳ CT-07 EX-03 Admin POST /api/loans
+  POST http://127.0.0.1:3108/api/loans [201 Created, 514B, 38ms]
+  1. status 403
+  2. French admin message
+  ✓  response time < 500 ms
+  ✓  Content-Type JSON
+
+❏ Défauts connus
+↳ CT-19 EX-11 AN-03 titre 201 caractères
+  POST http://127.0.0.1:3108/api/books [403 Forbidden, 339B, 22ms]
+  ✓  AN-03 required result is 400
+  3. AN-03 observed actual 201
+
+┌─────────────────────────┬────────────────────┬───────────────────┐
+│                         │           executed │            failed │
+├─────────────────────────┼────────────────────┼───────────────────┤
+│              iterations │                  1 │                 0 │
+├─────────────────────────┼────────────────────┼───────────────────┤
+│                requests │                  8 │                 0 │
+├─────────────────────────┼────────────────────┼───────────────────┤
+│            test-scripts │                  8 │                 0 │
+├─────────────────────────┼────────────────────┼───────────────────┤
+│      prerequest-scripts │                  0 │                 0 │
+├─────────────────────────┼────────────────────┼───────────────────┤
+│              assertions │                 23 │                 3 │
+├─────────────────────────┴────────────────────┴───────────────────┤
+│ total run duration: 1176ms                                       │
+├──────────────────────────────────────────────────────────────────┤
+│ total data received: 784B (approx)                               │
+├──────────────────────────────────────────────────────────────────┤
+│ average response time: 124ms [min: 9ms, max: 436ms, s.d.: 173ms] │
+└──────────────────────────────────────────────────────────────────┘
+
+  #  failure         detail                                                                                       
+                                                                                                                  
+ 1.  AssertionError  status 403                                                                                   
+                     expected response to have status code 403 but got 201                                        
+                     at assertion:0 in test-script                                                                
+                     inside "Admin / CT-07 EX-03 Admin POST /api/loans"                                           
+                                                                                                                  
+ 2.  AssertionError  French admin message                                                                         
+                     expected undefined to deeply equal 'Les administrateurs ne peuvent pas emprunter de livres.' 
+                     at assertion:1 in test-script                                                                
+                     inside "Admin / CT-07 EX-03 Admin POST /api/loans"                                           
+                                                                                                                  
+ 3.  AssertionError  AN-03 observed actual 201                                                                    
+                     expected response to have status code 201 but got 403                                        
+                     at assertion:1 in test-script                                                                
+                     inside "Défauts connus / CT-19 EX-11 AN-03 titre 201 caractères"                             

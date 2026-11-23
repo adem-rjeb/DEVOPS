@@ -1,0 +1,5 @@
+Newman run limitation:
+- Login requests returned 200, but subsequent role requests did not reliably send the HTTP-only JWT cookie.
+- Admin direct curl with a cookie jar returned HTTP 403 and confirmed AN-01 behavior.
+- AN-03 known-defect request requires an admin cookie and remains unverified through Newman in this run.
+- Visitor 307 and no-cookie behavior were verified by Newman and direct curl.
