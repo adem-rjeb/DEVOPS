@@ -27,3 +27,16 @@
 | loan-alice-active | Alice       | Livre Actif  | returnedAt null  |
 | loan-alice-late   | Alice       | Livre Libre  | dueDate dépassée |
 | loan-limit-a/b/c  | limit3      | trois livres | 3 actifs         |
+
+## Rechargement avant chaque campagne
+
+Avant chaque exécution locale:
+
+```bash
+rm -f /tmp/bibliotheque-test.db
+DATABASE_URL='file:/tmp/bibliotheque-test.db' npx prisma db push
+DATABASE_URL='file:/tmp/bibliotheque-test.db' npm run seed:test
+DATABASE_URL='file:/tmp/bibliotheque-test.db' npm run dev -- --port 3106
+```
+
+Toute base utilisée doit être une base SQLite explicitement nommée `test`, `tmp`, `temp` ou `bibliotheque-step...`. `prisma/dev.db` est toujours refusé par `prisma/seed-test.ts`. Les prêts doivent être créés et les stocks disponibles décrémentés ou incrémentés de manière cohérente avec `totalCopies`.

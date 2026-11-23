@@ -75,3 +75,17 @@
 - **Statut :** non reproductible sur le baseline
 - **Exigence violée :** cohérence entre l'état affiché et le stock.
 - **Test de non-régression :** test UI avec `availableCopies=0` et `availableCopies=1`.
+
+## AN-06 - Visiteur redirigé au lieu d'une réponse API 401
+
+- **Étapes :** appeler `GET /api/loans` puis `GET /api/books` sans cookie sur le serveur courant.
+- **Attendu :** HTTP `401` avec JSON `{"error":"Authentification requise."}`.
+- **Réel :** HTTP `307 Temporary Redirect`, en-tête `location: /login`, corps `/login`.
+- **Sévérité :** majeure
+- **Priorité :** P1
+- **Preuve :** `docs/preuves/step6-live-campaign.txt`.
+- **Commit :** 7a790c8
+- **Retest :** non corrigé.
+- **Statut :** ouvert
+- **Exigence violée :** EX-01 exige une route protégée sans cookie retourne HTTP `401`.
+- **Test de non-régression :** à ajouter sans cookie sur les deux routes API.
