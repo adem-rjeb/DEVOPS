@@ -4,9 +4,7 @@ import { assertBorrowAllowed } from "@/lib/loans";
 
 describe("AN-01 / AN-02 sur le baseline", () => {
   it("AN-01 refuse l'emprunt d'un administrateur", () => {
-    expect(() => assertBorrowAllowed(false, 0)).toThrow(
-      "ADMIN_CANNOT_BORROW",
-    );
+    expect(() => assertBorrowAllowed(false, 0)).toThrow("ADMIN_CANNOT_BORROW");
   });
 
   it("AN-02 refuse la suppression d'un livre avec emprunt actif", async () => {
@@ -32,7 +30,9 @@ describe("AN-01 / AN-02 sur le baseline", () => {
         data: { userId: member.id, bookId: book.id },
       });
 
-      await expect(prisma.book.delete({ where: { id: book.id } })).rejects.toThrow();
+      await expect(
+        prisma.book.delete({ where: { id: book.id } }),
+      ).rejects.toThrow();
     } finally {
       await prisma.$disconnect();
     }

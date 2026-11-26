@@ -14,7 +14,6 @@ vi.mock("@/lib/prisma", async () => {
   };
 });
 
-
 const databaseUrl = process.env.TEST_DATABASE_URL;
 const appDatabaseUrl = process.env.DATABASE_URL;
 
