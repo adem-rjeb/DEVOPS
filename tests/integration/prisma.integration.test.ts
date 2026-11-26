@@ -3,6 +3,18 @@ import { PrismaClient } from "@prisma/client";
 import { borrowBook, returnBook } from "@/lib/loans";
 import { deleteBook, updateBookStock } from "@/lib/books";
 
+import { vi } from "vitest";
+
+vi.mock("@/lib/prisma", async () => {
+  const { PrismaClient } = await import("@prisma/client");
+  return {
+    prisma: new PrismaClient({
+      datasources: { db: { url: process.env.TEST_DATABASE_URL } },
+    }),
+  };
+});
+
+
 const databaseUrl = process.env.TEST_DATABASE_URL;
 const appDatabaseUrl = process.env.DATABASE_URL;
 
@@ -11,9 +23,9 @@ if (!databaseUrl || !appDatabaseUrl) {
     "DATABASE_URL et TEST_DATABASE_URL sont requis pour les tests d'intégration.",
   );
 }
-if (databaseUrl !== appDatabaseUrl) {
+if (databaseUrl === appDatabaseUrl) {
   throw new Error(
-    "DATABASE_URL et TEST_DATABASE_URL doivent désigner la même base de test.",
+    "La base de test doit être différente de la base de développement.",
   );
 }
 if (databaseUrl.includes("dev.db")) {
