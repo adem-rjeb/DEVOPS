@@ -20,6 +20,7 @@
     "bcryptjs": "^3.0.2",
     "jose": "^6.1.0",
     "next": "^16.0.1",
+    "prisma": "^7.10.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "zod": "^4.6.7"
@@ -42,7 +43,6 @@
     "newman": "^6.2.3",
     "newman-reporter-html": "^1.0.5",
     "prettier": "^3.6.2",
-    "prisma": "^6.19.3",
     "tsx": "^4.23.15",
     "typescript": "^5.9.3",
     "vitest": "^4.0.8"

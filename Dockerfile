@@ -9,6 +9,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN cp prisma/schema.postgres.prisma prisma/schema.prisma
 RUN npx prisma generate && npm run build
+RUN npm prune --omit=dev
 
 FROM node:22-alpine AS runner
 WORKDIR /app
@@ -19,4 +20,4 @@ COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/node_modules ./node_modules
 COPY docker-entrypoint.sh ./
 EXPOSE 3000
-CMD ["sh", "docker-entrypoint.sh"] 
+CMD ["sh", "docker-entrypoint.sh"]
