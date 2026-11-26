@@ -36,7 +36,7 @@ npm run lint       # ESLint
 npm test           # 44 tests Vitest isolés (mocks, sans base de production)
 npm run build      # Prisma generate + Next build
 npm run seed       # crée les données de démonstration
-npm run test:e2e   # Playwright: inscription, connexion, emprunt, retour
+npx playwright test --headed  # Playwright: inscription, connexion, emprunt, retour
 npm start          # serveur de production
 docker compose up --build  # nécessite Docker Desktop démarré
 ````
