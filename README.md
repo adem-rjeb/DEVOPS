@@ -19,7 +19,7 @@ Les prêts peuvent être prolongés deux fois au maximum, de 7 jours à chaque f
 
 ## Installation locale
 
-```bash
+````bash
 cp .env.example .env
 npm ci
 npx prisma generate
@@ -39,7 +39,7 @@ npm run seed       # crée les données de démonstration
 npm run test:e2e   # Playwright: inscription, connexion, emprunt, retour
 npm start          # serveur de production
 docker compose up --build  # nécessite Docker Desktop démarré
-```
+````
 
 ## API
 
