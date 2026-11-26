@@ -1,6 +1,6 @@
 FROM node:22-alpine AS deps
 WORKDIR /app
-COPY package*.json ./
+COPY package*.json .npmrc ./
 RUN npm ci
 
 FROM node:22-alpine AS builder
@@ -19,4 +19,4 @@ COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/node_modules ./node_modules
 COPY docker-entrypoint.sh ./
 EXPOSE 3000
-CMD ["sh", "docker-entrypoint.sh"]
+CMD ["sh", "docker-entrypoint.sh"] 
