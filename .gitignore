@@ -9,3 +9,9 @@ docker-data
 test-results/
 playwright-report/
 .DS_Store
+
+# Playwright
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/

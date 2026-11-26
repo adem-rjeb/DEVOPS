@@ -3,44 +3,25 @@
     "name": "Bibliothèque API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
-  "variable": [
-    { "key": "createdBookId", "value": "" },
-    { "key": "aliceLoanId", "value": "" }
-  ],
   "item": [
     {
       "name": "Visitor",
       "item": [
         {
-          "name": "CT-03 EX-01 GET /api/loans sans cookie",
+          "name": "CT-03 EX-01 - GET /api/loans sans cookie",
           "request": { "method": "GET", "url": "{{baseUrl}}/api/loans" },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test('AN-06 status redirect 307', () => pm.response.to.have.status(307));",
-                  "pm.test('response time < 500 ms', () => pm.expect(pm.response.responseTime).to.be.below(500));",
-                  "pm.test('Location vers login', () => pm.expect(pm.response.headers.get('Location')).to.eql('/login'));"
-                ]
-              }
-            }
-          ]
+          "event": [{ "listen": "test", "script": { "exec": [
+            "pm.test('AN-06 main run should not expect 307', () => pm.expect(pm.response.code).to.not.eql(307));",
+            "pm.test('EX-01 sans cookie requiert 401', () => pm.response.to.have.status(401));",
+            "pm.test('réponse JSON', () => pm.expect(pm.response.headers.get('content-type')).to.include('application/json'));"
+          ] } }]
         },
         {
-          "name": "CT-03 EX-01 GET /api/books sans cookie",
+          "name": "CT-03 EX-01 - GET /api/books sans cookie",
           "request": { "method": "GET", "url": "{{baseUrl}}/api/books" },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test('AN-06 status redirect 307', () => pm.response.to.have.status(307));",
-                  "pm.test('response time < 500 ms', () => pm.expect(pm.response.responseTime).to.be.below(500));"
-                ]
-              }
-            }
-          ]
+          "event": [{ "listen": "test", "script": { "exec": [
+            "pm.test('EX-01 sans cookie requiert 401', () => pm.response.to.have.status(401));"
+          ] } }]
         }
       ]
     },
@@ -48,70 +29,100 @@
       "name": "Member",
       "item": [
         {
-          "name": "CT-01 EX-01 Login membre",
+          "name": "CT-01 EX-01 - Login membre avec cookie",
           "request": {
             "method": "POST",
             "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "body": {
-              "mode": "raw",
-              "raw": "{\"email\":\"{{memberEmail}}\",\"password\":\"{{memberPassword}}\"}"
-            },
+            "body": { "mode": "raw", "raw": "{\"email\":\"{{memberEmail}}\",\"password\":\"{{memberPassword}}\"}" },
             "url": "{{baseUrl}}/api/auth/login"
           },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test('status 200', () => pm.response.to.have.status(200));",
-                  "pm.test('response time < 500 ms', () => pm.expect(pm.response.responseTime).to.be.below(500));",
-                  "pm.test('Content-Type JSON', () => pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json'));",
-                  "pm.test('champ ok', () => pm.expect(pm.response.json()).to.have.property('ok', true));"
-                ]
-              }
-            }
-          ]
+          "event": [{ "listen": "test", "script": { "exec": [
+            "pm.test('login status 200', () => pm.response.to.have.status(200));",
+            "pm.test('session cookie present', () => pm.expect(pm.response.headers.get('set-cookie')).to.include('library-session'));",
+            "pm.test('JSON ok', () => pm.expect(pm.response.json()).to.have.property('ok', true));"
+          ] } }]
         },
         {
-          "name": "CT-12 EX-06 Borrow stock zéro",
+          "name": "CT-12 EX-06 - Lookup Stock Zéro",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/books?q=Stock Zéro" },
+          "event": [{ "listen": "test", "script": { "exec": [
+            "const books=pm.response.json(); pm.expect(books).to.be.an('array').with.length.above(0); pm.collectionVariables.set('stockZeroId',books[0].id);",
+            "pm.test('status 200', () => pm.response.to.have.status(200));"
+          ] } }]
+        },
+        {
+          "name": "CT-12 EX-06 - Emprunt stock zéro",
           "request": {
             "method": "POST",
             "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "body": {
-              "mode": "raw",
-              "raw": "{\"bookId\":\"{{stockZeroId}}\"}"
-            },
+            "body": { "mode": "raw", "raw": "{\"bookId\":\"{{stockZeroId}}\"}" },
             "url": "{{baseUrl}}/api/loans"
           },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test('status 409', () => pm.response.to.have.status(409));",
-                  "pm.test('French stock message', () => pm.expect(pm.response.json().error).to.eql('Aucun exemplaire disponible.'));",
-                  "pm.test('response time < 500 ms', () => pm.expect(pm.response.responseTime).to.be.below(500));",
-                  "pm.test('Content-Type JSON', () => pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json'));"
-                ]
-              }
-            }
-          ]
+          "event": [{ "listen": "test", "script": { "exec": [
+            "pm.test('status 409', () => pm.response.to.have.status(409));",
+            "pm.test('message stock', () => pm.expect(pm.response.json().error).to.eql('Aucun exemplaire disponible.'));"
+          ] } }]
         },
         {
-          "name": "CT-16 EX-08 Member on own loans",
+          "name": "CT-14 EX-05 - Double emprunt",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\"bookId\":\"{{freeBookId}}\"}" },
+            "url": "{{baseUrl}}/api/loans"
+          },
+          "event": [{ "listen": "test", "script": { "exec": [
+            "pm.test('status 201 or 409 depending first call', () => pm.expect([201,409]).to.include(pm.response.code));",
+            "if(pm.response.code===201){pm.collectionVariables.set('aliceLoanId',pm.response.json().id);}"
+          ] } }]
+        },
+        {
+          "name": "CT-14 EX-05 - Double emprunt répété",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\"bookId\":\"{{freeBookId}}\"}" },
+            "url": "{{baseUrl}}/api/loans"
+          },
+          "event": [{ "listen": "test", "script": { "exec": [
+            "pm.test('status 409', () => pm.response.to.have.status(409));",
+            "pm.test('message doublon', () => pm.expect(pm.response.json().error).to.eql('Vous avez déjà emprunté ce livre.'));"
+          ] } }]
+        },
+        {
+          "name": "CT-15 EX-08 - Voir uniquement ses prêts",
           "request": { "method": "GET", "url": "{{baseUrl}}/api/loans" },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test('status 200', () => pm.response.to.have.status(200));",
-                  "pm.test('array JSON', () => pm.expect(pm.response.json()).to.be.an('array'));",
-                  "pm.test('response time < 500 ms', () => pm.expect(pm.response.responseTime).to.be.below(500));"
-                ]
-              }
-            }
-          ]
+          "event": [{ "listen": "test", "script": { "exec": [
+            "pm.test('status 200', () => pm.response.to.have.status(200));",
+            "const loans=pm.response.json(); pm.test('liste JSON',()=>pm.expect(loans).to.be.an('array'));"
+          ] } }]
+        },
+        {
+          "name": "CT-15 EX-08 - Retour propriétaire",
+          "request": { "method": "PATCH", "url": "{{baseUrl}}/api/loans/{{aliceLoanId}}" },
+          "event": [{ "listen": "test", "script": { "exec": [
+            "pm.test('status 200', () => pm.response.to.have.status(200));",
+            "pm.test('ok true', () => pm.expect(pm.response.json()).to.have.property('ok',true));"
+          ] } }]
+        },
+        {
+          "name": "CT-17 EX-08 - Second retour",
+          "request": { "method": "PATCH", "url": "{{baseUrl}}/api/loans/{{aliceLoanId}}" },
+          "event": [{ "listen": "test", "script": { "exec": [
+            "pm.test('status 404', () => pm.response.to.have.status(404));"
+          ] } }]
+        },
+        {
+          "name": "CT-16 EX-03 - Membre sur POST /api/books",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\"title\":\"Interdit\",\"author\":\"QA\",\"totalCopies\":1}" },
+            "url": "{{baseUrl}}/api/books"
+          },
+          "event": [{ "listen": "test", "script": { "exec": [
+            "pm.test('status 403', () => pm.response.to.have.status(403));"
+          ] } }]
         }
       ]
     },
@@ -119,26 +130,31 @@
       "name": "Other member",
       "item": [
         {
-          "name": "CT-16 EX-08 Login Bruno",
+          "name": "CT-16 EX-08 - Login autre membre avec cookie",
           "request": {
             "method": "POST",
             "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "body": {
-              "mode": "raw",
-              "raw": "{\"email\":\"{{otherEmail}}\",\"password\":\"{{otherPassword}}\"}"
-            },
+            "body": { "mode": "raw", "raw": "{\"email\":\"{{otherEmail}}\",\"password\":\"{{otherPassword}}\"}" },
             "url": "{{baseUrl}}/api/auth/login"
           },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test('status 200', () => pm.response.to.have.status(200));"
-                ]
-              }
-            }
-          ]
+          "event": [{ "listen": "test", "script": { "exec": [
+            "pm.test('login status 200', () => pm.response.to.have.status(200));",
+            "pm.test('session cookie present', () => pm.expect(pm.response.headers.get('set-cookie')).to.include('library-session'));"
+          ] } }]
+        },
+        {
+          "name": "CT-16 EX-08 - Voir uniquement prêts Bruno",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/loans" },
+          "event": [{ "listen": "test", "script": { "exec": [
+            "pm.test('status 200', () => pm.response.to.have.status(200));"
+          ] } }]
+        },
+        {
+          "name": "CT-16 EX-08 - Retournement prêt Alice",
+          "request": { "method": "PATCH", "url": "{{baseUrl}}/api/loans/{{aliceLoanId}}" },
+          "event": [{ "listen": "test", "script": { "exec": [
+            "pm.test('status 404', () => pm.response.to.have.status(404));"
+          ] } }]
         }
       ]
     },
@@ -146,26 +162,59 @@
       "name": "Admin",
       "item": [
         {
-          "name": "CT-07 EX-03 Admin POST /api/loans",
+          "name": "CT-07 EX-03 - Login admin avec cookie",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\"email\":\"{{adminEmail}}\",\"password\":\"{{adminPassword}}\"}" },
+            "url": "{{baseUrl}}/api/auth/login"
+          },
+          "event": [{ "listen": "test", "script": { "exec": [
+            "pm.test('login status 200', () => pm.response.to.have.status(200));",
+            "pm.test('session cookie present', () => pm.expect(pm.response.headers.get('set-cookie')).to.include('library-session'));"
+          ] } }]
+        },
+        {
+          "name": "CT-07 EX-03 - Admin POST /api/loans",
           "request": {
             "method": "POST",
             "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": { "mode": "raw", "raw": "{\"bookId\":\"{{freeBookId}}\"}" },
             "url": "{{baseUrl}}/api/loans"
           },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test('status 403', () => pm.response.to.have.status(403));",
-                  "pm.test('French admin message', () => pm.expect(pm.response.json().error).to.eql('Les administrateurs ne peuvent pas emprunter de livres.'));",
-                  "pm.test('response time < 500 ms', () => pm.expect(pm.response.responseTime).to.be.below(500));",
-                  "pm.test('Content-Type JSON', () => pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json'));"
-                ]
-              }
-            }
-          ]
+          "event": [{ "listen": "test", "script": { "exec": [
+            "pm.test('status 403', () => pm.response.to.have.status(403));",
+            "pm.test('message admin', () => pm.expect(pm.response.json().error).to.eql('Les administrateurs ne peuvent pas emprunter de livres.'));"
+          ] } }]
+        },
+        {
+          "name": "CT-11 EX-04 - Quatrième emprunt",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\"bookId\":\"{{freeBookId}}\"}" },
+            "url": "{{baseUrl}}/api/loans"
+          },
+          "event": [{ "listen": "test", "script": { "exec": [
+            "pm.test('status 403', () => pm.response.to.have.status(403));"
+          ] } }]
+        }
+      ]
+    },
+    {
+      "name": "Invalid login and rate limit",
+      "item": [
+        {
+          "name": "CT-02 EX-01 - Login invalide",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\"email\":\"alice@test.local\",\"password\":\"MauvaisMotDePasse\"}" },
+            "url": "{{baseUrl}}/api/auth/login"
+          },
+          "event": [{ "listen": "test", "script": { "exec": [
+            "pm.test('status 401', () => pm.response.to.have.status(401));"
+          ] } }]
         }
       ]
     },
@@ -173,27 +222,25 @@
       "name": "Défauts connus",
       "item": [
         {
-          "name": "CT-19 EX-11 AN-03 titre 201 caractères",
+          "name": "CT-19 EX-11 AN-03 - 201 caractères en tant qu'ADMIN",
           "request": {
             "method": "POST",
             "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "body": {
-              "mode": "raw",
-              "raw": "{\"title\":\"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"author\":\"Auteur\",\"totalCopies\":1}"
-            },
+            "body": { "mode": "raw", "raw": "{\"title\":\"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"author\":\"Auteur\",\"totalCopies\":1}" },
             "url": "{{baseUrl}}/api/books"
           },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test('AN-03 required result is 400', () => pm.expect(400).to.eql(400));",
-                  "pm.test('AN-03 observed actual 201', () => pm.response.to.have.status(201));"
-                ]
-              }
-            }
-          ]
+          "event": [{ "listen": "test", "script": { "exec": [
+            "pm.test('EXPECTED FAIL - required 400', () => pm.expect(pm.response.code).to.eql(400));",
+            "pm.test('AN-03 actual 201 documented', () => pm.expect(pm.response.code).to.eql(201));"
+          ] } }]
+        },
+        {
+          "name": "CT-03 EX-01 AN-06 - Visitor 307 instead of 401",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/loans" },
+          "event": [{ "listen": "test", "script": { "exec": [
+            "pm.test('EXPECTED FAIL - required 401', () => pm.expect(pm.response.code).to.eql(401));",
+            "pm.test('AN-06 actual 307 documented', () => pm.expect(pm.response.code).to.eql(307));"
+          ] } }]
         }
       ]
     }

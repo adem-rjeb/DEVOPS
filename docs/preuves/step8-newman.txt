@@ -3,90 +3,400 @@ newman
 Bibliothèque API
 
 ❏ Visitor
-↳ CT-03 EX-01 GET /api/loans sans cookie
-  GET http://127.0.0.1:3108/api/loans [307 Temporary Redirect, 171B, 27ms]
-  ✓  AN-06 status redirect 307
-  ✓  response time < 500 ms
-  ✓  Location vers login
+↳ CT-03 EX-01 - GET /api/loans sans cookie
+  GET http://localhost:3000/api/loans [errored]
+     Invalid IP address: undefined
+  ✓  AN-06 main run should not expect 307
+  2. EX-01 sans cookie requiert 401
+  3. réponse JSON
 
-↳ CT-03 EX-01 GET /api/books sans cookie
-  GET http://127.0.0.1:3108/api/books [307 Temporary Redirect, 171B, 9ms]
-  ✓  AN-06 status redirect 307
-  ✓  response time < 500 ms
+↳ CT-03 EX-01 - GET /api/books sans cookie
+  GET http://localhost:3000/api/books [errored]
+     Invalid IP address: undefined
+  5. EX-01 sans cookie requiert 401
 
 ❏ Member
-↳ CT-01 EX-01 Login membre
-  POST http://127.0.0.1:3108/api/auth/login [200 OK, 628B, 436ms]
-  ✓  status 200
-  ✓  response time < 500 ms
-  ✓  Content-Type JSON
-  ✓  champ ok
+↳ CT-01 EX-01 - Login membre avec cookie
+  POST http://localhost:3000/api/auth/login [errored]
+     Invalid IP address: undefined
+  7. login status 200
+  8. session cookie present
+  9. JSON ok
 
-↳ CT-12 EX-06 Borrow stock zéro
-  POST http://127.0.0.1:3108/api/loans [409 Conflict, 337B, 31ms]
-  ✓  status 409
-  ✓  French stock message
-  ✓  response time < 500 ms
-  ✓  Content-Type JSON
+↳ CT-12 EX-06 - Lookup Stock Zéro
+  GET http://localhost:3000/api/books?q=Stock Zéro [errored]
+     Invalid IP address: undefined
+ 11⠄ JSONError in test-script
 
-↳ CT-16 EX-08 Member on own loans
-  GET http://127.0.0.1:3108/api/loans [200 OK, 742B, 20ms]
-  ✓  status 200
-  ✓  array JSON
-  ✓  response time < 500 ms
+↳ CT-12 EX-06 - Emprunt stock zéro
+  POST http://localhost:3000/api/loans [errored]
+     Invalid IP address: undefined
+ 13. status 409
+ 14. message stock
+
+↳ CT-14 EX-05 - Double emprunt
+  POST http://localhost:3000/api/loans [errored]
+     Invalid IP address: undefined
+ 16. status 201 or 409 depending first call
+
+↳ CT-14 EX-05 - Double emprunt répété
+  POST http://localhost:3000/api/loans [errored]
+     Invalid IP address: undefined
+ 18. status 409
+ 19. message doublon
+
+↳ CT-15 EX-08 - Voir uniquement ses prêts
+  GET http://localhost:3000/api/loans [errored]
+     Invalid IP address: undefined
+ 21. status 200
+ 22⠄ JSONError in test-script
+
+↳ CT-15 EX-08 - Retour propriétaire
+  PATCH http://localhost:3000/api/loans/{{aliceLoanId}} [errored]
+     Invalid IP address: undefined
+ 24. status 200
+ 25. ok true
+
+↳ CT-17 EX-08 - Second retour
+  PATCH http://localhost:3000/api/loans/{{aliceLoanId}} [errored]
+     Invalid IP address: undefined
+ 27. status 404
+
+↳ CT-16 EX-03 - Membre sur POST /api/books
+  POST http://localhost:3000/api/books [errored]
+     Invalid IP address: undefined
+ 29. status 403
 
 ❏ Other member
-↳ CT-16 EX-08 Login Bruno
-  POST http://127.0.0.1:3108/api/auth/login [200 OK, 628B, 413ms]
-  ✓  status 200
+↳ CT-16 EX-08 - Login autre membre avec cookie
+  POST http://localhost:3000/api/auth/login [errored]
+     Invalid IP address: undefined
+ 31. login status 200
+ 32. session cookie present
+
+↳ CT-16 EX-08 - Voir uniquement prêts Bruno
+  GET http://localhost:3000/api/loans [errored]
+     Invalid IP address: undefined
+ 34. status 200
+
+↳ CT-16 EX-08 - Retournement prêt Alice
+  PATCH http://localhost:3000/api/loans/{{aliceLoanId}} [errored]
+     Invalid IP address: undefined
+ 36. status 404
 
 ❏ Admin
-↳ CT-07 EX-03 Admin POST /api/loans
-  POST http://127.0.0.1:3108/api/loans [201 Created, 514B, 38ms]
-  1. status 403
-  2. French admin message
-  ✓  response time < 500 ms
-  ✓  Content-Type JSON
+↳ CT-07 EX-03 - Login admin avec cookie
+  POST http://localhost:3000/api/auth/login [errored]
+     Invalid IP address: undefined
+ 38. login status 200
+ 39. session cookie present
+
+↳ CT-07 EX-03 - Admin POST /api/loans
+  POST http://localhost:3000/api/loans [errored]
+     Invalid IP address: undefined
+ 41. status 403
+ 42. message admin
+
+↳ CT-11 EX-04 - Quatrième emprunt
+  POST http://localhost:3000/api/loans [errored]
+     Invalid IP address: undefined
+ 44. status 403
+
+❏ Invalid login and rate limit
+↳ CT-02 EX-01 - Login invalide
+  POST http://localhost:3000/api/auth/login [errored]
+     Invalid IP address: undefined
+ 46. status 401
 
 ❏ Défauts connus
-↳ CT-19 EX-11 AN-03 titre 201 caractères
-  POST http://127.0.0.1:3108/api/books [403 Forbidden, 339B, 22ms]
-  ✓  AN-03 required result is 400
-  3. AN-03 observed actual 201
+↳ CT-19 EX-11 AN-03 - 201 caractères en tant qu'ADMIN
+  POST http://localhost:3000/api/books [errored]
+     Invalid IP address: undefined
+ 48. EXPECTED FAIL - required 400
+ 49. AN-03 actual 201 documented
 
-┌─────────────────────────┬────────────────────┬───────────────────┐
-│                         │           executed │            failed │
-├─────────────────────────┼────────────────────┼───────────────────┤
-│              iterations │                  1 │                 0 │
-├─────────────────────────┼────────────────────┼───────────────────┤
-│                requests │                  8 │                 0 │
-├─────────────────────────┼────────────────────┼───────────────────┤
-│            test-scripts │                  8 │                 0 │
-├─────────────────────────┼────────────────────┼───────────────────┤
-│      prerequest-scripts │                  0 │                 0 │
-├─────────────────────────┼────────────────────┼───────────────────┤
-│              assertions │                 23 │                 3 │
-├─────────────────────────┴────────────────────┴───────────────────┤
-│ total run duration: 1176ms                                       │
-├──────────────────────────────────────────────────────────────────┤
-│ total data received: 784B (approx)                               │
-├──────────────────────────────────────────────────────────────────┤
-│ average response time: 124ms [min: 9ms, max: 436ms, s.d.: 173ms] │
-└──────────────────────────────────────────────────────────────────┘
+↳ CT-03 EX-01 AN-06 - Visitor 307 instead of 401
+  GET http://localhost:3000/api/loans [errored]
+     Invalid IP address: undefined
+ 51. EXPECTED FAIL - required 401
+ 52. AN-06 actual 307 documented
 
-  #  failure         detail                                                                                       
-                                                                                                                  
- 1.  AssertionError  status 403                                                                                   
-                     expected response to have status code 403 but got 201                                        
-                     at assertion:0 in test-script                                                                
-                     inside "Admin / CT-07 EX-03 Admin POST /api/loans"                                           
-                                                                                                                  
- 2.  AssertionError  French admin message                                                                         
-                     expected undefined to deeply equal 'Les administrateurs ne peuvent pas emprunter de livres.' 
-                     at assertion:1 in test-script                                                                
-                     inside "Admin / CT-07 EX-03 Admin POST /api/loans"                                           
-                                                                                                                  
- 3.  AssertionError  AN-03 observed actual 201                                                                    
-                     expected response to have status code 201 but got 403                                        
-                     at assertion:1 in test-script                                                                
-                     inside "Défauts connus / CT-19 EX-11 AN-03 titre 201 caractères"                             
+┌─────────────────────────┬──────────┬──────────┐
+│                         │ executed │   failed │
+├─────────────────────────┼──────────┼──────────┤
+│              iterations │        1 │        0 │
+├─────────────────────────┼──────────┼──────────┤
+│                requests │       20 │       20 │
+├─────────────────────────┼──────────┼──────────┤
+│            test-scripts │       20 │        2 │
+├─────────────────────────┼──────────┼──────────┤
+│      prerequest-scripts │        0 │        0 │
+├─────────────────────────┼──────────┼──────────┤
+│              assertions │       31 │       30 │
+├─────────────────────────┴──────────┴──────────┤
+│ total run duration: 405ms                     │
+├───────────────────────────────────────────────┤
+│ total data received: 0B (approx)              │
+└───────────────────────────────────────────────┘
+
+   #  failure         detail                                                                                               
+                                                                                                                           
+ 01.  TypeError                                                                                                            
+                      Invalid IP address: undefined                                                                        
+                      at request                                                                                           
+                      inside "Visitor / CT-03 EX-01 - GET /api/loans sans cookie"                                          
+                                                                                                                           
+ 02.  AssertionError  EX-01 sans cookie requiert 401                                                                       
+                      expected { Object (id, _details, ...) } to have property 'code'                                      
+                      at assertion:1 in test-script                                                                        
+                      inside "Visitor / CT-03 EX-01 - GET /api/loans sans cookie"                                          
+                                                                                                                           
+ 03.  AssertionError  réponse JSON                                                                                         
+                      object tested must be an array, a map, an object, a set, a string, or a weakset, but undefined given 
+                      at assertion:2 in test-script                                                                        
+                      inside "Visitor / CT-03 EX-01 - GET /api/loans sans cookie"                                          
+                                                                                                                           
+ 04.  TypeError                                                                                                            
+                      Invalid IP address: undefined                                                                        
+                      at request                                                                                           
+                      inside "Visitor / CT-03 EX-01 - GET /api/books sans cookie"                                          
+                                                                                                                           
+ 05.  AssertionError  EX-01 sans cookie requiert 401                                                                       
+                      expected { Object (id, _details, ...) } to have property 'code'                                      
+                      at assertion:0 in test-script                                                                        
+                      inside "Visitor / CT-03 EX-01 - GET /api/books sans cookie"                                          
+                                                                                                                           
+ 06.  TypeError                                                                                                            
+                      Invalid IP address: undefined                                                                        
+                      at request                                                                                           
+                      inside "Member / CT-01 EX-01 - Login membre avec cookie"                                             
+                                                                                                                           
+ 07.  AssertionError  login status 200                                                                                     
+                      expected { Object (id, _details, ...) } to have property 'code'                                      
+                      at assertion:0 in test-script                                                                        
+                      inside "Member / CT-01 EX-01 - Login membre avec cookie"                                             
+                                                                                                                           
+ 08.  AssertionError  session cookie present                                                                               
+                      object tested must be an array, a map, an object, a set, a string, or a weakset, but undefined given 
+                      at assertion:1 in test-script                                                                        
+                      inside "Member / CT-01 EX-01 - Login membre avec cookie"                                             
+                                                                                                                           
+ 09.  JSONError       JSON ok                                                                                              
+                      "undefined" is not valid JSON                                                                        
+                      at assertion:2 in test-script                                                                        
+                      inside "Member / CT-01 EX-01 - Login membre avec cookie"                                             
+                                                                                                                           
+ 10.  TypeError                                                                                                            
+                      Invalid IP address: undefined                                                                        
+                      at request                                                                                           
+                      inside "Member / CT-12 EX-06 - Lookup Stock Zéro"                                                    
+                                                                                                                           
+ 11.  JSONError                                                                                                            
+                      "undefined" is not valid JSON                                                                        
+                      at test-script                                                                                       
+                      inside "Member / CT-12 EX-06 - Lookup Stock Zéro"                                                    
+                                                                                                                           
+ 12.  TypeError                                                                                                            
+                      Invalid IP address: undefined                                                                        
+                      at request                                                                                           
+                      inside "Member / CT-12 EX-06 - Emprunt stock zéro"                                                   
+                                                                                                                           
+ 13.  AssertionError  status 409                                                                                           
+                      expected { Object (id, _details, ...) } to have property 'code'                                      
+                      at assertion:0 in test-script                                                                        
+                      inside "Member / CT-12 EX-06 - Emprunt stock zéro"                                                   
+                                                                                                                           
+ 14.  JSONError       message stock                                                                                        
+                      "undefined" is not valid JSON                                                                        
+                      at assertion:1 in test-script                                                                        
+                      inside "Member / CT-12 EX-06 - Emprunt stock zéro"                                                   
+                                                                                                                           
+ 15.  TypeError                                                                                                            
+                      Invalid IP address: undefined                                                                        
+                      at request                                                                                           
+                      inside "Member / CT-14 EX-05 - Double emprunt"                                                       
+                                                                                                                           
+ 16.  AssertionError  status 201 or 409 depending first call                                                               
+                      expected [ 201, 409 ] to include undefined                                                           
+                      at assertion:0 in test-script                                                                        
+                      inside "Member / CT-14 EX-05 - Double emprunt"                                                       
+                                                                                                                           
+ 17.  TypeError                                                                                                            
+                      Invalid IP address: undefined                                                                        
+                      at request                                                                                           
+                      inside "Member / CT-14 EX-05 - Double emprunt répété"                                                
+                                                                                                                           
+ 18.  AssertionError  status 409                                                                                           
+                      expected { Object (id, _details, ...) } to have property 'code'                                      
+                      at assertion:0 in test-script                                                                        
+                      inside "Member / CT-14 EX-05 - Double emprunt répété"                                                
+                                                                                                                           
+ 19.  JSONError       message doublon                                                                                      
+                      "undefined" is not valid JSON                                                                        
+                      at assertion:1 in test-script                                                                        
+                      inside "Member / CT-14 EX-05 - Double emprunt répété"                                                
+                                                                                                                           
+ 20.  TypeError                                                                                                            
+                      Invalid IP address: undefined                                                                        
+                      at request                                                                                           
+                      inside "Member / CT-15 EX-08 - Voir uniquement ses prêts"                                            
+                                                                                                                           
+ 21.  AssertionError  status 200                                                                                           
+                      expected { Object (id, _details, ...) } to have property 'code'                                      
+                      at assertion:0 in test-script                                                                        
+                      inside "Member / CT-15 EX-08 - Voir uniquement ses prêts"                                            
+                                                                                                                           
+ 22.  JSONError                                                                                                            
+                      "undefined" is not valid JSON                                                                        
+                      at test-script                                                                                       
+                      inside "Member / CT-15 EX-08 - Voir uniquement ses prêts"                                            
+                                                                                                                           
+ 23.  TypeError                                                                                                            
+                      Invalid IP address: undefined                                                                        
+                      at request                                                                                           
+                      inside "Member / CT-15 EX-08 - Retour propriétaire"                                                  
+                                                                                                                           
+ 24.  AssertionError  status 200                                                                                           
+                      expected { Object (id, _details, ...) } to have property 'code'                                      
+                      at assertion:0 in test-script                                                                        
+                      inside "Member / CT-15 EX-08 - Retour propriétaire"                                                  
+                                                                                                                           
+ 25.  JSONError       ok true                                                                                              
+                      "undefined" is not valid JSON                                                                        
+                      at assertion:1 in test-script                                                                        
+                      inside "Member / CT-15 EX-08 - Retour propriétaire"                                                  
+                                                                                                                           
+ 26.  TypeError                                                                                                            
+                      Invalid IP address: undefined                                                                        
+                      at request                                                                                           
+                      inside "Member / CT-17 EX-08 - Second retour"                                                        
+                                                                                                                           
+ 27.  AssertionError  status 404                                                                                           
+                      expected { Object (id, _details, ...) } to have property 'code'                                      
+                      at assertion:0 in test-script                                                                        
+                      inside "Member / CT-17 EX-08 - Second retour"                                                        
+                                                                                                                           
+ 28.  TypeError                                                                                                            
+                      Invalid IP address: undefined                                                                        
+                      at request                                                                                           
+                      inside "Member / CT-16 EX-03 - Membre sur POST /api/books"                                           
+                                                                                                                           
+ 29.  AssertionError  status 403                                                                                           
+                      expected { Object (id, _details, ...) } to have property 'code'                                      
+                      at assertion:0 in test-script                                                                        
+                      inside "Member / CT-16 EX-03 - Membre sur POST /api/books"                                           
+                                                                                                                           
+ 30.  TypeError                                                                                                            
+                      Invalid IP address: undefined                                                                        
+                      at request                                                                                           
+                      inside "Other member / CT-16 EX-08 - Login autre membre avec cookie"                                 
+                                                                                                                           
+ 31.  AssertionError  login status 200                                                                                     
+                      expected { Object (id, _details, ...) } to have property 'code'                                      
+                      at assertion:0 in test-script                                                                        
+                      inside "Other member / CT-16 EX-08 - Login autre membre avec cookie"                                 
+                                                                                                                           
+ 32.  AssertionError  session cookie present                                                                               
+                      object tested must be an array, a map, an object, a set, a string, or a weakset, but undefined given 
+                      at assertion:1 in test-script                                                                        
+                      inside "Other member / CT-16 EX-08 - Login autre membre avec cookie"                                 
+                                                                                                                           
+ 33.  TypeError                                                                                                            
+                      Invalid IP address: undefined                                                                        
+                      at request                                                                                           
+                      inside "Other member / CT-16 EX-08 - Voir uniquement prêts Bruno"                                    
+                                                                                                                           
+ 34.  AssertionError  status 200                                                                                           
+                      expected { Object (id, _details, ...) } to have property 'code'                                      
+                      at assertion:0 in test-script                                                                        
+                      inside "Other member / CT-16 EX-08 - Voir uniquement prêts Bruno"                                    
+                                                                                                                           
+ 35.  TypeError                                                                                                            
+                      Invalid IP address: undefined                                                                        
+                      at request                                                                                           
+                      inside "Other member / CT-16 EX-08 - Retournement prêt Alice"                                        
+                                                                                                                           
+ 36.  AssertionError  status 404                                                                                           
+                      expected { Object (id, _details, ...) } to have property 'code'                                      
+                      at assertion:0 in test-script                                                                        
+                      inside "Other member / CT-16 EX-08 - Retournement prêt Alice"                                        
+                                                                                                                           
+ 37.  TypeError                                                                                                            
+                      Invalid IP address: undefined                                                                        
+                      at request                                                                                           
+                      inside "Admin / CT-07 EX-03 - Login admin avec cookie"                                               
+                                                                                                                           
+ 38.  AssertionError  login status 200                                                                                     
+                      expected { Object (id, _details, ...) } to have property 'code'                                      
+                      at assertion:0 in test-script                                                                        
+                      inside "Admin / CT-07 EX-03 - Login admin avec cookie"                                               
+                                                                                                                           
+ 39.  AssertionError  session cookie present                                                                               
+                      object tested must be an array, a map, an object, a set, a string, or a weakset, but undefined given 
+                      at assertion:1 in test-script                                                                        
+                      inside "Admin / CT-07 EX-03 - Login admin avec cookie"                                               
+                                                                                                                           
+ 40.  TypeError                                                                                                            
+                      Invalid IP address: undefined                                                                        
+                      at request                                                                                           
+                      inside "Admin / CT-07 EX-03 - Admin POST /api/loans"                                                 
+                                                                                                                           
+ 41.  AssertionError  status 403                                                                                           
+                      expected { Object (id, _details, ...) } to have property 'code'                                      
+                      at assertion:0 in test-script                                                                        
+                      inside "Admin / CT-07 EX-03 - Admin POST /api/loans"                                                 
+                                                                                                                           
+ 42.  JSONError       message admin                                                                                        
+                      "undefined" is not valid JSON                                                                        
+                      at assertion:1 in test-script                                                                        
+                      inside "Admin / CT-07 EX-03 - Admin POST /api/loans"                                                 
+                                                                                                                           
+ 43.  TypeError                                                                                                            
+                      Invalid IP address: undefined                                                                        
+                      at request                                                                                           
+                      inside "Admin / CT-11 EX-04 - Quatrième emprunt"                                                     
+                                                                                                                           
+ 44.  AssertionError  status 403                                                                                           
+                      expected { Object (id, _details, ...) } to have property 'code'                                      
+                      at assertion:0 in test-script                                                                        
+                      inside "Admin / CT-11 EX-04 - Quatrième emprunt"                                                     
+                                                                                                                           
+ 45.  TypeError                                                                                                            
+                      Invalid IP address: undefined                                                                        
+                      at request                                                                                           
+                      inside "Invalid login and rate limit / CT-02 EX-01 - Login invalide"                                 
+                                                                                                                           
+ 46.  AssertionError  status 401                                                                                           
+                      expected { Object (id, _details, ...) } to have property 'code'                                      
+                      at assertion:0 in test-script                                                                        
+                      inside "Invalid login and rate limit / CT-02 EX-01 - Login invalide"                                 
+                                                                                                                           
+ 47.  TypeError                                                                                                            
+                      Invalid IP address: undefined                                                                        
+                      at request                                                                                           
+                      inside "Défauts connus / CT-19 EX-11 AN-03 - 201 caractères en tant qu'ADMIN"                        
+                                                                                                                           
+ 48.  AssertionError  EXPECTED FAIL - required 400                                                                         
+                      expected undefined to deeply equal 400                                                               
+                      at assertion:0 in test-script                                                                        
+                      inside "Défauts connus / CT-19 EX-11 AN-03 - 201 caractères en tant qu'ADMIN"                        
+                                                                                                                           
+ 49.  AssertionError  AN-03 actual 201 documented                                                                          
+                      expected undefined to deeply equal 201                                                               
+                      at assertion:1 in test-script                                                                        
+                      inside "Défauts connus / CT-19 EX-11 AN-03 - 201 caractères en tant qu'ADMIN"                        
+                                                                                                                           
+ 50.  TypeError                                                                                                            
+                      Invalid IP address: undefined                                                                        
+                      at request                                                                                           
+                      inside "Défauts connus / CT-03 EX-01 AN-06 - Visitor 307 instead of 401"                             
+                                                                                                                           
+ 51.  AssertionError  EXPECTED FAIL - required 401                                                                         
+                      expected undefined to deeply equal 401                                                               
+                      at assertion:0 in test-script                                                                        
+                      inside "Défauts connus / CT-03 EX-01 AN-06 - Visitor 307 instead of 401"                             
+                                                                                                                           
+ 52.  AssertionError  AN-06 actual 307 documented                                                                          
+                      expected undefined to deeply equal 307                                                               
+                      at assertion:1 in test-script                                                                        
+                      inside "Défauts connus / CT-03 EX-01 AN-06 - Visitor 307 instead of 401"                             

@@ -50,6 +50,13 @@ async function main() {
       passwordHash,
     },
   });
+  await prisma.user.create({
+    data: {
+      name: "Limit Trois",
+      email: "limit3@test.local",
+      passwordHash,
+    },
+  });
 
   const [stock0, stock1, active, free] = await Promise.all([
     prisma.book.create({
