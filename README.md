@@ -15,7 +15,7 @@ tests/               Tests Vitest + React Testing Library
 
 Les rôles sont `MEMBRE` et `ADMIN`. L'inscription crée un membre ; un administrateur peut être créé directement dans la base avec le champ `role` (ou via un script d'administration propre à l'environnement). Les livres sont écrits uniquement par les administrateurs. Les emprunts sont contrôlés dans des transactions Prisma : les administrateurs ne peuvent pas emprunter, un membre ne peut pas emprunter deux fois simultanément le même livre, et un membre est limité à trois emprunts actifs. Toute suppression d'un livre emprunté est refusée. Le stock reste toujours compris entre 0 et le nombre total d'exemplaires.
 
-Les prêts peuvent être prolongés deux fois au maximum, de 7 jours à chaque fois. Une prolongation est refusée pour un prêt en retard ou déjà retourné. Lorsqu'un livre n'a plus d'exemplaire disponible, les membres peuvent créer une réservation. La première réservation en attente devient prête lors du prochain retour, avec une fenêtre de retrait de 48 heures réservée à ce membre. Les réservations actives peuvent être annulées depuis le dashboard. Les données des formulaires sont validées avec Zod dans les Route Handlers. Les statuts des prêts sont calculés à partir de `returnedAt` et `dueDate`; aucun statut retardé n'est stocké pour devenir obsolète.
+Les prêts peuvent être prolongés deux fois au maximum, de 7 jours à chaque fois. Une prolongation est refusée pour un prêt en retard ou déjà retourné. Lorsqu'un livre n'a plus d'exemplaire disponible, les membres peuvent créer une réservation. La première réservation en attente devient prête lors du prochain retour, avec une fenêtre de retrait de 48 heures réservée à ce membre. Les réservations actives peuvent être annulées depuis le dashboard. Les données des formulaires sont validées avec Zod dans les Route Handlers. Les statuts des prêts sont calculés à partir de `returnedAt` et `dueDate`; aucun stazadazeazatut retardé n'est stocké pour devenir obsolète.
 
 ## Installation locale
 
@@ -25,7 +25,7 @@ npm ci
 npx prisma generate
 npx prisma db push
 npm run dev
-```
+``
 
 L'application est disponible sur <http://localhost:3000>. SQLite est utilisé en local. Le schéma PostgreSQL est fourni dans `prisma/schema.postgres.prisma`; le Dockerfile l'utilise automatiquement pour le déploiement.
 
